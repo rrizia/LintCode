@@ -1,0 +1,36 @@
+/*
+Compare two strings A and B, determine whether A contains all of the characters in B.
+
+The characters in string A and B are all Upper Case letters.
+The characters of B in A are not necessary continuous or ordered.
+
+For A = "ABCD", B = "ACD", return true.
+
+For A = "ABCD", B = "AABC", return false.
+*/
+
+public class Solution {
+    /**
+     * @param A : A string includes Upper Case letters
+     * @param B : A string includes Upper Case letter
+     * @return :  if string A contains all of the characters in B return true else return false
+     */
+    public boolean compareStrings(String A, String B) {
+        if((A == null && B == null) || (A.length() == 0 && B.length() == 0)) return true;
+        if(A == null || A.length() == 0) return false;
+        else if(B == null || B.length() == 0) return true;
+        else if(A.length() < B.length()) return false;
+        
+        int[] map = new int[26];
+        for(int i = 0; i<A.length(); i++){
+            map[(int)(A.charAt(i) - 'A')]++;
+            if(i<B.length())
+                map[(int)(B.charAt(i) - 'A')]--;
+        }
+        
+        for(int i = 0; i<map.length; i++){
+            if(map[i] < 0) return false;
+        }
+        return true;
+    }
+}
