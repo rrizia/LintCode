@@ -1,0 +1,57 @@
+/*Given an array of strings, return all groups of strings that are anagrams.
+Given ["lint", "intl", "inlt", "code"], return ["lint", "inlt", "intl"].
+
+Given ["ab", "ba", "cd", "dc", "e"], return ["ab", "ba", "cd", "dc"].
+*/
+public class Solution {
+    /**
+     * @param strs: A list of strings
+     * @return: A list of strings
+     */
+    public List<String> anagrams(String[] strs) {
+        List<String> result = new ArrayList<String>();
+        if(strs == null) return null;
+        else if(strs.length == 0) return result;
+        
+        Map<String, List<String>> map = new HashMap<String, List<String>>();
+        for(int i = 0; i<strs.length; i++){
+            String key = sortStr(strs[i]);
+            if(!map.containsKey(key)){
+                map.put(key, new ArrayList<String>());
+            }
+            List<String> l = map.get(key);
+            l.add(strs[i]);
+            map.put(key, l);
+        }
+        
+        for(List<String> l: map.values()){
+            if(l.size() > 1){
+                result.addAll(l);   
+            }
+        }
+        return result;
+     }
+     
+    public String sortStr(String s){
+         if(s == null || s.length() == 0) return s;
+         char[] c = s.toCharArray();
+         Arrays.sort(c);
+         return new String(c);
+     }
+     
+     /*public List<String> anagrams(String[] strs) {
+        List<String> result = new ArrayList<String>();
+        if(strs == null || strs.length == 0) return result;
+        Arrays.sort(strs, new AnagramComparator());
+        for(String s: strs){
+            result.add(s);
+        }
+        return result;
+     }
+     
+     class AnagramComparator implements Comparator<String>{
+         public int compare(String s1, String s2){
+             return sortStr(s1).compareTo(sortStr(s2));
+         }
+     }*/
+}
