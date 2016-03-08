@@ -1,0 +1,43 @@
+/*
+Merge two given sorted integer array A and B into a new sorted integer array.
+A=[1,2,3,4]
+
+B=[2,4,5,6]
+
+return [1,2,2,3,4,4,5,6]
+*/
+
+class Solution {
+    /**
+     * @param A and B: sorted integer array A and B.
+     * @return: A new sorted integer array
+     */
+    public int[] mergeSortedArray(int[] A, int[] B) {
+       if(A == null && B == null) return null;
+       else if(A == null || B == null) return (A==null)?B:A;
+       
+       int[] result = new int[A.length+B.length];
+       int indexA = 0;
+       int indexB = 0;
+       int index = 0;
+       
+       while(indexA<A.length && indexB < B.length){
+           if(A[indexA] < B[indexB]){
+               result[index++] = A[indexA++];
+           }else{
+               result[index++] = B[indexB++];
+           }
+       }
+       
+       if(indexA<A.length){
+           while(indexA<A.length){
+               result[index++] = A[indexA++];
+           }
+       }else if(indexB<B.length){
+           while(indexB<B.length){
+               result[index++] = B[indexB++];
+           }
+       }
+       return result;
+    }
+}
