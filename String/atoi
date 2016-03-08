@@ -1,0 +1,49 @@
+/*
+Implement function atoi to convert a string to an integer.
+
+If no valid conversion could be performed, a zero value is returned.
+
+If the correct value is out of the range of representable values, INT_MAX (2147483647) or INT_MIN (-2147483648) is returned.
+
+"10" => 10
+"-1" => -1
+"123123123123123" => 2147483647
+"1.0" => 1
+*/
+
+public class Solution {
+    /**
+     * @param str: A string
+     * @return An integer
+     */
+    public int atoi(String str) {
+        if(str == null || str.length() == 0) return 0;
+        str = str.trim();
+        if(!isNumeric(str.charAt(0)) && str.charAt(0) != '+' && str.charAt(0)!='-') return 0;
+        
+        boolean isNeg = false;
+        if(str.charAt(0) == '-') 
+            isNeg = true;
+        if(str.charAt(0) == '+' || str.charAt(0)=='-')
+            str = str.substring(1);
+        int num = 0;
+        
+        for(int i = 0; i<str.length(); i++){
+            char c = str.charAt(i);
+            if(!isNumeric(c))
+                break;
+            int temp = num*10;
+            if(temp/10 != num) return isNeg?Integer.MIN_VALUE:Integer.MAX_VALUE;
+            num = temp+(int)(c-'0');
+            if(num<0) return isNeg?Integer.MIN_VALUE:Integer.MAX_VALUE;
+        }
+        if(num == 0) return 0;
+        else if(isNeg) return -1*num;
+        return num;
+    }
+    
+    public boolean isNumeric(char c){
+        if(c>='0' && c<='9') return true;
+        return false;
+    }
+}
