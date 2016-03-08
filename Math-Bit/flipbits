@@ -11,20 +11,15 @@ class Solution {
      *return: An integer
      */
     public static int bitSwapRequired(int a, int b) {
-        if (a == b) {
-			return 0;
-		}
-		int bit = a ^ b;
-		int count = 0;
-		// integer has 32 bits
-		int number = 32;
-		// you cannot just check bit > 0 in the while statement
-		// because a or b maybe negative number
-		while (number > 0) {
-			count += bit & 1;
-			bit = bit >> 1;
-			number--;
-		}
-		return count;
+        if(a == b) return 0;
+        int n = a ^ b;
+        int count = 0;
+        // doing n != 0 instead of n>0, because a or b can be negative
+        //when a and b has different sign and you do xor, n will be negative
+        while(n!=0){
+            n = n & (n-1);
+            count++;
+        }
+        return count;
     }
 };
