@@ -1,0 +1,88 @@
+/**
+ * Definition for ListNode.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int val) {
+ *         this.val = val;
+ *         this.next = null;
+ *     }
+ * }
+ */ 
+public class Solution {
+    /**
+     * @param head: The head of linked list.
+     * @return: You should return the head of the sorted linked list,
+                    using constant space complexity.
+     */
+    private ListNode curL = null;
+    public int countNodes(ListNode l){
+        int c = 0;
+        while(l!=null){
+            c++;
+            l = l.next;
+        }
+        return c;
+    }
+    public ListNode sortList(ListNode head) {  
+        if(head == null || head.next == null) return head;
+        curL = head;
+        int n = countNodes(head);
+        return mergeSort(1, n);
+    }
+    
+    public ListNode mergeSort(int s, int e){
+        if(s>e) return null;
+        else if(s == e){
+            ListNode temp = curL.next;
+            curL.next = null;
+            ListNode ret = curL;
+            curL = temp;
+            return ret;
+        }else{
+            int m = s+(e-s)/2;
+            ListNode l = mergeSort(s, m);
+            ListNode r = mergeSort(m+1, e);
+            ListNode cur = merge(l, r);
+            return cur;
+        }
+    }
+    
+     public ListNode merge(ListNode l1, ListNode l2) {
+       if(l1 == null || l2 == null) return (l1==null)?l2:l1;
+       ListNode nH = null;
+       ListNode nT = null;
+       
+       while(l1!=null && l2!=null){
+           if(l1.val < l2.val){
+               ListNode temp = l1.next;
+               l1.next = null;
+               if(nT == null){
+                   nH = l1;
+                   nT = l1;
+               }else{
+                   nT.next = l1;
+                   nT = l1;
+               }
+               l1 = temp;
+           }else{
+               ListNode temp = l2.next;
+               l2.next = null;
+               if(nT == null){
+                   nH = l2;
+                   nT = l2;
+               }else{
+                   nT.next = l2;
+                   nT = l2;
+               }
+               l2 = temp;
+           }
+       }
+       
+        if(l1!=null)
+            nT.next = l1;
+        else if(l2!=null)
+            nT.next = l2;
+        return nH;
+    }
+}
