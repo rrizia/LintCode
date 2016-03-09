@@ -1,0 +1,58 @@
+/**
+ * Definition for ListNode.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int val) {
+ *         this.val = val;
+ *         this.next = null;
+ *     }
+ * }
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */ 
+public class Solution {
+    /**
+     * @param head: The first node of linked list.
+     * @return: a tree node
+     */
+    private ListNode curList = null;
+    
+    public int countNodes(ListNode l){
+        int c = 0;
+        ListNode cur = l;
+        while(cur!=null){
+            c++;
+            cur = cur.next;
+        }
+        return c;
+    }
+    
+    public TreeNode sortedListToBST(ListNode head) {  
+        int n = countNodes(head);
+        curList = head;
+        return listToBST(1, n);
+    }
+    
+    public TreeNode listToBST(int s, int e){
+        if(s>e) return null;
+        int m = s+(e-s)/2;
+        
+        TreeNode left = listToBST(s, m-1);
+        TreeNode cur = new TreeNode(curList.val);
+        
+        curList = curList.next;
+        
+        TreeNode right = listToBST(m+1, e);
+        cur.left = left;
+        cur.right = right;
+        return cur;
+    }
+}
