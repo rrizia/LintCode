@@ -1,0 +1,77 @@
+/*
+Reverse a linked list from position m to n.
+Given m, n satisfy the following condition: 1 ≤ m ≤ n ≤ length of list.
+Given 1->2->3->4->5->NULL, m = 2 and n = 4, return 1->4->3->2->5->NULL.
+*/
+/**
+ * Definition for ListNode
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    /**
+     * @param ListNode head is the head of the linked list 
+     * @oaram m and n
+     * @return: The head of the reversed ListNode
+     */
+    public ListNode reverseBetween(ListNode head, int m , int n) {
+        if(head == null || head.next == null) return head;
+        int c = 1;
+        ListNode cur = head;
+        ListNode prev = null;
+        
+        while(c<m){
+            prev = cur;
+            cur = cur.next;
+            c++;
+        }
+        
+        while(c<n){
+            cur = cur.next;
+            c++;
+        }
+        
+        ListNode mid = head;
+        if(prev!=null){
+            mid = prev.next;
+            prev.next = null;
+        }
+        
+        ListNode r = cur.next;
+        cur.next = null;
+        
+        ListNode[] rev = reverse(mid);
+        rev[1].next = r;
+        if(prev!=null){
+            prev.next = rev[0];
+            return head;
+        }else{
+            return rev[0];
+        }
+    }
+    
+    public ListNode[] reverse(ListNode m){
+        ListNode[] result = new ListNode[2];
+        Arrays.fill(result, null);
+        if(m == null) return result;
+        while(m!=null){
+            ListNode temp = m.next;
+            m.next = null;
+            if(result[0] == null){
+                result[0] = m;
+                result[1] = m;
+            }else{
+                m.next = result[0];
+                result[0] = m;
+            }
+            m = temp;
+        }
+        return result;
+    }
+}
