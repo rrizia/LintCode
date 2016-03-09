@@ -1,0 +1,30 @@
+public class Solution {
+    /**
+     * @param A: A list of lists of integers
+     * @return: An integer
+     */
+    public int jump(int[] A) {
+        if(A == null || A.length <= 1) return 0;
+        int c = 0;
+        int i = 0;
+        
+        while(i<A.length){
+            if(i<A.length-1 && A[i] == 0) return -1;
+            int maxIndex = i;
+            for(int j = 1; j<=A[i]; j++){
+                int candidate = i+j;
+                if(candidate >= A.length-1){
+                    c++;
+                    return c;
+                }else{
+                    if(A[candidate]+candidate >= maxIndex+A[maxIndex]){
+                        maxIndex = candidate;
+                    }
+                }
+            }
+            i = maxIndex;
+            c++;
+        }
+        return c;
+    }
+}
