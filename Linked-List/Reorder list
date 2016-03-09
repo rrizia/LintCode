@@ -1,0 +1,73 @@
+/*
+Given a singly linked list L: L0→L1→…→Ln-1→Ln,
+reorder it to: L0→Ln→L1→Ln-1→L2→Ln-2→…
+
+You must do this in-place without altering the nodes' values.
+
+For example,
+Given 1->2->3->4->null, reorder it to 1->4->2->3->null.
+
+*/
+
+/**
+ * Definition for ListNode.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int val) {
+ *         this.val = val;
+ *         this.next = null;
+ *     }
+ * }
+ */ 
+public class Solution {
+    /**
+     * @param head: The head of linked list.
+     * @return: void
+     */
+    public ListNode reverseList(ListNode l){
+        if(l == null || l.next == null) return l;
+        ListNode nH = null;
+        
+        while(l!=null){
+            ListNode temp = l.next;
+            l.next = nH;
+            nH = l;
+            l = temp;
+        }
+        return nH;
+    }
+    public void reorderList(ListNode head) {  
+        if(head == null || head.next == null) return;
+        
+        ListNode f = head;
+        ListNode s = head;
+        ListNode prev = null;
+        
+        while(f!=null && f.next!=null){
+            f = f.next.next;
+            prev = s;
+            s = s.next;
+        }
+        
+        if(f!=null){
+            prev = s;
+            s = s.next;
+        }
+        prev.next = null;
+        
+        ListNode rev = reverseList(s);
+        prev = head;
+        while(rev != null){
+            ListNode temp1 = rev.next;
+            ListNode temp2 = prev.next;
+           
+            prev.next = rev;
+            rev.next = temp2;
+            
+            rev = temp1;
+            prev = temp2;
+        }
+        
+    }
+}
