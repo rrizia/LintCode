@@ -1,0 +1,42 @@
+/*
+Divide two integers without using multiplication, division and mod operator.
+
+If it is overflow, return 2147483647
+
+Given dividend = 100 and divisor = 9, return 11.
+*/
+public class Solution {
+    /**
+     * @param dividend the dividend
+     * @param divisor the divisor
+     * @return the result
+     */
+    public int divide(int dividend, int divisor) {
+        if(dividend == 0 || divisor == 1) return dividend;
+        else if(divisor == 0 || (dividend == Integer.MIN_VALUE && divisor == -1)) return Integer.MAX_VALUE;
+        
+        boolean isNeg = false;
+        if( (dividend ^ divisor) < 0 ) 
+            isNeg = true;
+       
+        long x = dividend;
+        long y = divisor;
+        
+        x = Math.abs(x);
+        y = Math.abs(y);
+        
+        int result = 0;
+        
+        while(x>=y){
+            int k = 1;
+            
+            while( (y<<k) >= (y<<(k-1)) && (x - (y<<k)) >=0)
+                k++;
+            x = x-(y<<(k-1));
+            result += (1<<(k-1));
+        }
+        
+        if(isNeg) return -1*result;
+        return result;
+    }
+}
