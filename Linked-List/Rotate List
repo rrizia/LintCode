@@ -1,0 +1,64 @@
+/*
+Given a list, rotate the list to the right by k places, where k is non-negative.
+
+Given 1->2->3->4->5 and k = 2, return 4->5->1->2->3.
+*/
+
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    /**
+     * @param head: the List
+     * @param k: rotate to the right k places
+     * @return: the list after rotation
+     */
+    public int countNodes(ListNode h){
+        int c = 0;
+        ListNode cur = h;
+        while(cur!=null){
+            c++;
+            cur = cur.next;
+        }
+        return c;
+    }
+    public ListNode rotateRight(ListNode head, int k) {
+        if(head == null || head.next == null || k <= 0) return head;
+        int n = countNodes(head);
+        k = k%n;
+        
+        if(k == 0) return head;
+        
+        int c = 1;
+        ListNode f = head;
+        
+        while(c<k){
+            f = f.next;
+            c++;
+        }
+        
+        ListNode prev = null;
+        ListNode b = head;
+        while(f.next != null){
+            f = f.next;
+            prev = b;
+            b = b.next;
+        }
+        
+        if(prev!=null){
+            prev.next = null;
+            f.next = head;
+            return b;
+        }
+        return head;
+    }
+}
