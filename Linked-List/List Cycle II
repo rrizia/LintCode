@@ -1,0 +1,37 @@
+/**
+ * Definition for ListNode.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int val) {
+ *         this.val = val;
+ *         this.next = null;
+ *     }
+ * }
+ */ 
+public class Solution {
+    /**
+     * @param head: The first node of linked list.
+     * @return: The node where the cycle begins. 
+     *           if there is no cycle, return null
+     */
+    public ListNode detectCycle(ListNode head) {  
+        if(head == null || head.next == null) return null;
+        ListNode f = head;
+        ListNode s = head;
+        
+        while(f != null && f.next!=null){
+            f = f.next.next;
+            s = s.next;
+            if(s == f)
+                break;
+        }
+        if(f == null || f.next == null) return null;
+        s = head;
+        while(f!=s){
+            f = f.next;
+            s = s.next;
+        }
+        return s;
+    }
+}
