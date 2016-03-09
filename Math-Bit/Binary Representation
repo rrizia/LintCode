@@ -1,0 +1,56 @@
+/*
+Given a (decimal - e.g. 3.72) number that is passed in as a string, return the binary representation that is passed in as a string. 
+If the fractional part of the number can not be represented accurately in binary with at most 32 characters, return ERROR.
+For n = "3.72", return "ERROR".
+
+For n = "3.5", return "11.1".
+*/
+public class Solution {
+    /**
+     *@param n: Given a decimal number that is passed in as a string
+     *@return: A string
+     */
+     /*
+     0.72 = 7*1/10 + 2 * (1/10^2)
+     likewise: 0.101 = 1 * 1/2 + 0*(1/2^2) + 1 * (1/2^3)
+     now if we do 2* (1 * 1/2 + 0*(1/2^2) + 1 * (1/2^3)) = 1+0* (1/2) +  1 * (1/2^2) = 1.01
+     this way we take out each digit after decimal
+     */
+    public String binaryRepresentation(String n) {
+        if(n == null || n.length() == 0) return n;
+        String[] s = n.split("\\.");
+        
+        StringBuffer sb1 = new StringBuffer();
+        int n1 = Integer.parseInt(s[0]);
+        while(n1>0){
+            int r = n1%2;
+            n1 = n1>>1;
+            sb1.insert(0, r);
+        }
+        
+        if(sb1.length() == 0) sb1.append(0);
+        
+        double dec = Double.parseDouble("."+s[1]);
+        StringBuffer sb2 = new StringBuffer();
+    
+        while(dec > 0){
+            if(sb2.length() > 32) return "ERROR";
+            else if(dec == 1){
+                sb2.append((int)dec);
+                break;
+            }else{
+                double r = 2.0*dec;
+                if(r >= 1.0){
+                    sb2.append(1);
+                    dec = r-1.0;
+                }else{
+                    sb2.append(0);
+                    dec = r;
+                }
+            }
+        }
+        if(sb2.length() > 0)
+            return sb1.toString()+"."+sb2.toString();
+        else return sb1.toString();
+    }
+}
