@@ -1,0 +1,47 @@
+public class Solution {
+    /**
+      * @param start, a string
+      * @param end, a string
+      * @param dict, a set of string
+      * @return an integer
+      */
+    class QNode{
+        String word;
+        int dis;
+        
+        public QNode(String s, int d){
+            word = s;
+            dis  = d;
+        }
+    }
+    public int ladderLength(String start, String end, Set<String> dict) {
+        if(start.equals(end)) return 0;
+        
+        LinkedList<QNode> q = new LinkedList<QNode>();
+        q.offer(new QNode(start, 1));
+        dict.remove(start);
+        dict.add(end);
+        
+        while(!q.isEmpty()){
+            QNode cur = q.poll();
+            if(cur.word.equals(end))
+                return cur.dis;
+            else{
+                char[] c = cur.word.toCharArray();
+                for(int i = 0; i<c.length; i++){
+                    char temp = c[i];
+                    for(int j = 0; j<26; j++){
+                        c[i] = (char)('a'+j);
+                        String str = new String(c);
+                        if(dict.contains(str)){
+                            dict.remove(str);
+                            q.offer(new QNode(str, cur.dis+1));
+                        }
+                    }
+                    c[i] = temp;
+                }
+            }
+        }
+        return 0;
+    }
+}
