@@ -1,0 +1,66 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    /**
+     * @param head a ListNode
+     * @param k an integer
+     * @return a ListNode
+     */
+    public ListNode reverseKGroup(ListNode head, int k) {
+        if(head == null || head.next == null || k == 0) return head;
+        int n = countNodes(head);
+        if(k>n)
+            k = k%n;
+        return reverseKList(head, k);
+    }
+    
+    public ListNode reverseKList(ListNode head, int k){
+        if(head == null || head.next == null)
+            return head;
+        int c = 1;
+        ListNode cur = head;
+        while(c<k){
+            cur = cur.next;
+            if(cur == null) return head;
+            c++;
+        }
+        ListNode rest = cur.next;
+        cur.next = null;
+        
+        ListNode[] rev = reverse(head);
+        rev[1].next = reverseKList(rest, k);
+        return rev[0];
+    }
+    public int countNodes(ListNode l){
+        int c = 0;
+        while(l!=null){
+            c++;
+            l = l.next;
+        }
+        return c;
+    }
+    public ListNode[] reverse(ListNode m){
+        ListNode[] result = new ListNode[2];
+        Arrays.fill(result, null);
+        if(m == null) return result;
+        while(m!=null){
+            ListNode temp = m.next;
+            m.next = null;
+            if(result[0] == null){
+                result[0] = m;
+                result[1] = m;
+            }else{
+                m.next = result[0];
+                result[0] = m;
+            }
+            m = temp;
+        }
+        return result;
+    }
+}
