@@ -80,3 +80,44 @@ public class Solution {
      }
  
 }
+
+public class Solution {
+    public TreeNode removeNode(TreeNode root, int value) {
+        TreeNode dummy = new TreeNode(-1), cur = root, pre = dummy;
+        dummy.right = root;
+        while (cur != null) {
+            if (cur.val == value) {
+                if (pre.right == cur) {
+                    pre.right = makeNew(cur);
+                } else {
+                    pre.left = makeNew(cur);
+                }
+                break;
+            } else if (cur.val < value) {
+                pre = cur;
+                cur = cur.right;
+            } else {
+                pre = cur;
+                cur = cur.left;
+            }
+        }
+        return dummy.right;
+    }
+     
+    private TreeNode makeNew(TreeNode node) {
+        if (node.left == null && node.right == null) {
+            return null;
+        }
+        if (node.left == null || node.right == null) {
+            return node.left == null ? node.right : node.left;
+        }
+        TreeNode left = node.left.right;
+        TreeNode leftMost = node.right; //the left most node of right child
+        while (leftMost.left != null) {
+            leftMost = leftMost.left;
+        }
+        leftMost.left = left;//appen left's right tree to right's left most node
+        node.left.right = node.right;
+        return node.left;
+    }
+}
