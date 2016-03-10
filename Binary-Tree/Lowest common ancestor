@@ -1,0 +1,39 @@
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+public class Solution {
+    /**
+     * @param root: The root of the binary search tree.
+     * @param A and B: two nodes in a Binary.
+     * @return: Return the least common ancestor(LCA) of the two nodes.
+     */
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode A, TreeNode B) {
+       if(!covers(root, A) || !covers(root, B)) return null;
+       return lca(root, A, B);
+    }
+    
+    public TreeNode lca(TreeNode root, TreeNode A, TreeNode B){
+        if(root == null || A.val == root.val || B.val == root.val) return root;
+        boolean AonLeft = covers(root.left, A);
+        boolean BonLeft = covers(root.left, B);
+        if(AonLeft != BonLeft) return root;
+        TreeNode next = (AonLeft==true)?root.left:root.right;
+        return lca(next, A, B);
+    }
+    
+    public boolean covers(TreeNode root, TreeNode t){
+        if(root == null && t == null) return true;
+        else if(t == null) return true;
+        else if(root == null) return false;
+        else if(root.val == t.val) return true;
+        return (covers(root.left, t)|| covers(root.right, t));
+    }
+}
