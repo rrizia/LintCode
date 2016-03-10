@@ -1,0 +1,43 @@
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+ 
+ 
+public class Solution {
+    /**
+     *@param inorder : A list of integers that inorder traversal of a tree
+     *@param postorder : A list of integers that postorder traversal of a tree
+     *@return : Root of a tree
+     */
+    private int index = -1;
+    public TreeNode buildTree(int[] inorder, int[] postorder) {
+        if(inorder == null || postorder == null) 
+            return null;
+        else if(inorder.length != postorder.length) return null;
+        index = postorder.length-1;
+        
+        Map<Integer, Integer> inMap = new HashMap<Integer, Integer>();
+        for(int i = 0; i<inorder.length; i++){
+            inMap.put(inorder[i], i);
+        }
+        return buildTree(inorder, postorder, inMap, 0, inorder.length-1);
+    }
+    
+    public TreeNode buildTree(int[] in, int[] post, Map<Integer, Integer> inMap, int s, int e){
+        if(s>e) return null;
+        int cur = post[index--];
+        int inIdx = inMap.get(cur);
+        TreeNode t = new TreeNode(cur);
+        t.right = buildTree(in, post, inMap, inIdx+1, e);
+        t.left  = buildTree(in, post, inMap,s, inIdx-1);
+        return t;
+    }
+}
