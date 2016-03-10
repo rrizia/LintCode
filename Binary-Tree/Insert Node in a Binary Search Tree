@@ -1,0 +1,50 @@
+/*
+Given binary search tree as follow, after Insert node 6, the tree should be:
+
+  2             2
+ / \           / \
+1   4   -->   1   4
+   /             / \ 
+  3             3   6
+*/
+
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+public class Solution {
+    /**
+     * @param root: The root of the binary search tree.
+     * @param node: insert this node into the binary search tree
+     * @return: The root of the new binary search tree.
+     */
+    public TreeNode insertNode(TreeNode root, TreeNode node) {
+        TreeNode p = null;
+        TreeNode cur = root;
+        
+        while(cur!=null){
+            p = cur;
+            if(node.val < cur.val)
+                cur = cur.left;
+            else
+                cur = cur.right;
+        }
+        
+        if(p == null)
+            return node;
+        else{
+            if(node.val<p.val)
+                p.left = node;
+            else
+                p.right = node;
+        }
+        return root;
+    }
+}
