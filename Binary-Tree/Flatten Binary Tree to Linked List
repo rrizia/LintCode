@@ -1,0 +1,53 @@
+/*
+Flatten a binary tree to a fake "linked list" in pre-order traversal.
+
+Here we use the right pointer in TreeNode as the next pointer in ListNode.
+
+         1
+               \
+     1          2
+    / \          \
+   2   5    =>    3
+  / \   \          \
+ 3   4   6          4
+                     \
+                      5
+                       \
+                        6
+*/
+
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+public class Solution {
+    /**
+     * @param root: a TreeNode, the root of the binary tree
+     * @return: nothing
+     */
+    public void flatten(TreeNode root) {
+        if(root == null) return;
+        Stack<TreeNode> st = new Stack<TreeNode>();
+        st.push(root);
+        TreeNode prev = null;
+        while(!st.isEmpty()){
+            TreeNode top = st.pop();
+            if(top.right!=null)
+                st.push(top.right);
+            if(top.left!=null)
+                st.push(top.left);
+            if(prev!=null){
+                prev.left = null;
+                prev.right = top;
+            }
+            prev = top;
+        }
+    }
+}
