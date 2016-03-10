@@ -1,0 +1,51 @@
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+ 
+ 
+public class Solution {
+    /**
+     * @param root: The root of binary tree.
+     * @return: A list of lists of integer include 
+     *          the zigzag level order traversal of its nodes' values 
+     */
+    public ArrayList<ArrayList<Integer>> zigzagLevelOrder(TreeNode root) {
+        ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
+        if(root == null) return result;
+        Stack<TreeNode> cur = new Stack<TreeNode>();
+        cur.push(root);
+        boolean lTor = true;
+        while(!cur.isEmpty()){
+            Stack<TreeNode> next = new Stack<TreeNode>();
+            ArrayList<Integer> l = new ArrayList<Integer>();
+            while(!cur.isEmpty()){
+                TreeNode t = cur.pop();
+                l.add(t.val);
+                if(lTor){
+                    if(t.left!=null)
+                        next.push(t.left);
+                    if(t.right!=null)
+                        next.push(t.right);
+                }else{
+                    if(t.right!=null)
+                        next.push(t.right);
+                    if(t.left!=null)
+                        next.push(t.left);
+                        
+                }
+            }
+            lTor = !lTor;
+            cur = next;
+            result.add(l);
+        }
+        return result;
+    }
+}
