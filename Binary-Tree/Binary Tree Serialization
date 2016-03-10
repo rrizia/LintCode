@@ -1,0 +1,59 @@
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+class Solution {
+    /**
+     * This method will be invoked first, you should design your own algorithm 
+     * to serialize a binary tree which denote by a root node to a string which
+     * can be easily deserialized by your own "deserialize" method later.
+     */
+    public String serialize(TreeNode root) {
+        if(root == null) return "";
+        StringBuilder sb = new StringBuilder();
+        return buildStr(root, sb);
+    }
+    
+    public String buildStr(TreeNode root, StringBuilder sb){
+        if(root == null)
+            sb.append("null,");
+        else{
+            sb.append(root.val+",");
+            buildStr(root.left, sb);
+            buildStr(root.right, sb);
+        }
+        return sb.toString();
+    }
+    
+    /**
+     * This method will be invoked second, the argument data is what exactly
+     * you serialized at method "serialize", that means the data is not given by
+     * system, it's given by your own serialize method. So the format of data is
+     * designed by yourself, and deserialize it here as you serialize it in 
+     * "serialize" method.
+     */
+    public TreeNode deserialize(String data) {
+        if(data == null || data.length() == 0)
+            return null;
+        LinkedList<String> q = new LinkedList<String>();
+        q.addAll(Arrays.asList(data.split(",")));
+        return buildTree(q);
+    }
+    
+    public TreeNode buildTree(LinkedList<String> q){
+        String cur = q.poll();
+        if(cur.equals("null"))
+            return null;
+        TreeNode t = new TreeNode(Integer.parseInt(cur));
+        t.left = buildTree(q);
+        t.right = buildTree(q);
+        return t;
+    }
+}
