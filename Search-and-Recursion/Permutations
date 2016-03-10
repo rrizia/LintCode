@@ -1,0 +1,30 @@
+class Solution {
+    /**
+     * @param nums: A list of integers.
+     * @return: A list of permutations.
+     */
+    public ArrayList<ArrayList<Integer>> permute(ArrayList<Integer> nums) {
+        if(nums == null || nums.size() == 0) return new ArrayList<ArrayList<Integer>>();
+        return permuteH(nums, 0);
+    }
+    
+    public ArrayList<ArrayList<Integer>> permuteH(ArrayList<Integer> nums, int index){
+        ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
+        if(index == nums.size()-1){
+            ArrayList<Integer> l = new ArrayList<Integer>();
+            l.add(nums.get(index));
+            result.add(l);
+        }else{
+            int cur = nums.get(index);
+            ArrayList<ArrayList<Integer>> rest = permuteH(nums, index+1);
+            for(ArrayList<Integer> l : rest){
+                for(int i = 0; i<=l.size(); i++){
+                    ArrayList<Integer> t = new ArrayList<Integer>(l);
+                    t.add(i, cur);
+                    result.add(t);
+                }
+            }
+        }
+        return result;
+    }
+}
