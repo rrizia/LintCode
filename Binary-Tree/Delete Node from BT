@@ -1,0 +1,82 @@
+/**
+ * Definition of TreeNode:
+ * public class TreeNode {
+ *     public int val;
+ *     public TreeNode left, right;
+ *     public TreeNode(int val) {
+ *         this.val = val;
+ *         this.left = this.right = null;
+ *     }
+ * }
+ */
+public class Solution {
+    /**
+     * @param root: The root of the binary search tree.
+     * @param value: Remove the node with given value.
+     * @return: The root of the binary search tree after removal.
+     */
+   /**
+      * @param root: The root of the binary search tree.
+  * @param value: Remove the node with given value.
+  * @return: The root of the binary search tree after removal.
+  */
+     public TreeNode removeNode(TreeNode root, int value) {
+         if (root==null) return null;
+ 
+         TreeNode parent = new TreeNode(0);
+         parent.left = root;
+         searchNodeRecur(parent, root, value);
+         return parent.left;
+     }
+ 
+     public void searchNodeRecur(TreeNode parent, TreeNode cur, int val){
+         //if there is no such node, then do nothing.
+         if (cur==null) return;
+ 
+         //find the node.
+         if (cur.val == val){
+             removeNode(parent, cur);
+             return;
+         } else if (cur.val > val){
+             searchNodeRecur(cur,cur.left,val);
+         } else 
+             searchNodeRecur(cur,cur.right,val);
+ 
+     }
+ 
+     public void removeNode(TreeNode pre, TreeNode cur){
+         //a leaf node.
+         if (cur.left==null && cur.right==null)
+             if (pre.left==cur) pre.left = null;
+             else pre.right = null;
+         else if (cur.left==null || cur.right==null){ //cur only has one sub tree.
+             TreeNode child = (cur.left==null) ? cur.right : cur.left;
+             if (pre.left==cur) pre.left = child;
+             else pre.right=child;
+         } else {    //has two sub trees, select the largest node in the left subtree
+             TreeNode pre2 = cur;
+             TreeNode cur2 = cur.left;
+             while (cur2.right!=null){
+                 pre2 = cur2;
+                 cur2 = cur2.right;
+             }
+             //a leaf node
+             if (cur2.left==null){
+                 if (pre2.left==cur2) pre2.left = null;
+                 else pre2.right=null;
+                 cur2.left = cur.left;
+                 cur2.right = cur.right;
+                 if (pre.left==cur) pre.left=cur2;
+                 else pre.right=cur2;
+             } else {
+                 if (pre2.left==cur2) pre2.left = cur2.left;
+                 else pre2.right = cur2.left;
+                 cur2.left = cur.left;
+                 cur2.right = cur.right;
+                 if (pre.left==cur) pre.left=cur2;
+                 else pre.right=cur2;
+             }
+         }
+     }
+ 
+}
