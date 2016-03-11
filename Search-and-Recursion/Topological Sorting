@@ -1,0 +1,54 @@
+/*
+ Step 1: Find the root (multiple nodes may be root [node who does not have parent])
+ Step 2: BFS to find topological ordering
+*/
+
+
+/**
+ * Definition for Directed graph.
+ * class DirectedGraphNode {
+ *     int label;
+ *     ArrayList<DirectedGraphNode> neighbors;
+ *     DirectedGraphNode(int x) { label = x; neighbors = new ArrayList<DirectedGraphNode>(); }
+ * };
+ */
+public class Solution {
+    /**
+     * @param graph: A list of Directed graph node
+     * @return: Any topological order for the given graph.
+     */    
+    public ArrayList<DirectedGraphNode> topSort(ArrayList<DirectedGraphNode> graph) {
+        ArrayList<DirectedGraphNode> result = new ArrayList<DirectedGraphNode>();
+        Map<DirectedGraphNode, Integer> map = new HashMap<DirectedGraphNode, Integer>();
+        
+        for(DirectedGraphNode g1: graph){
+            for(DirectedGraphNode g2: g1.neighbors){
+                if(map.containsKey(g2)){
+                    map.put(g2, map.get(g2)+1);
+                }else{
+                    map.put(g2, 1);
+                }
+            }
+        }
+        
+        LinkedList<DirectedGraphNode> q = new LinkedList<DirectedGraphNode>();
+        for(DirectedGraphNode g: graph){
+            if(!map.containsKey(g)){
+                q.offer(g);
+                result.add(g);
+            }
+        }
+        
+        while(!q.isEmpty()){
+            DirectedGraphNode cur = q.poll();
+            for(DirectedGraphNode g: cur.neighbors){
+                map.put(g, map.get(g)-1);
+                if(map.get(g) == 0){
+                    q.offer(g);
+                    result.add(g);
+                }
+            }
+        }
+        return result;
+    }
+}
