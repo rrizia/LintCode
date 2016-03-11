@@ -1,0 +1,82 @@
+/*
+            hit -> [ait, bit, cit, ....zit] [hat, hbt, ... hzt], [hia, hib, ... hiz] all of these has same steps: hit.steps+1, if none of these channge matches with the endword, then we can remove all these words from unvisited list as they do not contribute to the set. thats why whenever steps changes (that is goes from hit.step+1 to hit.step+2) we can remove the words permanently from unvisited list, because we dont want to come back to this words again.
+            
+            We are removing only when step is chaniging because for the same step we may see the same word from different previous points and we want to keep trck of all path
+            Let say start = hit and end == cat
+            not 
+            hit->ait->abt->cbt->cat
+            hit->bit->bbt->cbt->cat
+            
+            we are visiting "cbt" from two different source, so I cannot remove cbt first time I visit it, I can only remove it after step change
+            */
+public class Solution {
+    /**
+      * @param start, a string
+      * @param end, a string
+      * @param dict, a set of string
+      * @return a list of lists of string
+      */
+    class QNode{
+        String word;
+        int dis;
+        QNode parent;
+        
+        public QNode(String str, int d, QNode p){
+            word = str;
+            dis = d;
+            parent = p;
+        }
+    }
+    public List<List<String>> findLadders(String start, String end, Set<String> dict) {
+        List<List<String>> result = new ArrayList<List<String>>();
+        HashSet<String> unvisited = new HashSet<String>();
+        HashSet<String> visited = new HashSet<String>();
+        LinkedList<QNode> q = new LinkedList<QNode>();
+        
+        unvisited.addAll(dict);
+        q.offer(new QNode(start, 1, null));
+        unvisited.add(end);
+        
+        int minDis = 0;
+        int minStep = 0;
+        
+        while(!q.isEmpty()){
+            QNode cur = q.poll();
+            if(cur.word.equals(end)){
+                if(minDis == 0){
+                    minDis = cur.dis;
+                }
+                
+                if(minDis!=0 && minDis == cur.dis){
+                    List<String> l = new ArrayList<String>();
+                    QNode temp = cur;
+                    while(temp!=null){
+                        l.add(0, temp.word);
+                        temp = temp.parent;
+                    }
+                    result.add(l);
+                }
+            }else{
+                if(minStep<cur.dis){
+                    unvisited.removeAll(visited);
+                }
+                minStep = cur.dis;
+                
+                char[] c = cur.word.toCharArray();
+                for(int i = 0; i<c.length; i++){
+                    char temp = c[i];
+                    for(int j = 0; j<26; j++){
+                        c[i] = (char)('a'+j);
+                        String str = new String(c);
+                        if(unvisited.contains(str)){
+                            visited.add(str);
+                            q.offer(new QNode(str, cur.dis+1, cur));
+                        }
+                    }
+                    c[i] = temp;
+                }
+            }
+        }
+        return result;
+    }
+}
