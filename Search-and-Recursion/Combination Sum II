@@ -1,0 +1,41 @@
+public class Solution {
+    /**
+     * @param num: Given the candidate numbers
+     * @param target: Given the target number
+     * @return: All the combinations that sum to target
+     */
+    public List<List<Integer>> combinationSum2(int[] num, int target) {
+        if(num == null || num.length == 0) return new ArrayList<List<Integer>>();
+        Arrays.sort(num);
+        List<List<Integer>> result = combinationSum(num, target, 0);
+        HashSet<List<Integer>> set = new HashSet<List<Integer>>(result);
+        result.clear();
+        result.addAll(set);
+        return result;
+    }
+    
+    public List<List<Integer>> combinationSum(int[] num, int target, int index){
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        if(target == 0 || index>=num.length || num[index] > target) return result;
+        else if(target==num[index]){
+            List<Integer> l = new ArrayList<Integer>();
+            l.add(num[index]);
+            result.add(l);
+            
+        }else{
+            List<List<Integer>> l1 = combinationSum(num, target, index+1);
+            List<List<Integer>> l2 = combinationSum(num, target-num[index], index+1);
+            if(l1.size() > 0){
+                result.addAll(l1);
+            }
+            
+            if(l2.size()>0){
+                for(List<Integer> l : l2){
+                    l.add(0, num[index]);
+                    result.add(l);
+                }
+            }
+        }
+        return result;
+    }
+}
