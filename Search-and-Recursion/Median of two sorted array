@@ -1,0 +1,47 @@
+class Solution {
+    /**
+     * @param A: An integer array.
+     * @param B: An integer array.
+     * @return: a double whose format is *.5 or *.0
+     */
+    public double findMedianSortedArrays(int[] A, int[] B) {
+        int m = A.length;
+        int n = B.length;
+        
+        if((m+n)%2 == 1){
+            return findMedianH(A, 0, m, B, 0, n, (m+n+1)/2);
+        }else{
+            double d1 = findMedianH(A, 0, m, B, 0, n, (m+n)/2);
+            double d2 = findMedianH(A, 0, m, B, 0, n, (m+n)/2+1);
+            return (d1+d2)/2.0;
+        }
+    }
+    
+    public double findMedianH(int[] A, int sa, int ea, int[] B, int sb, int eb, int k){
+        int m = ea-sa;
+        int n = eb-sb;
+        
+        if(m == 0){
+            return B[sb+k-1];
+        }else if(n == 0){
+            return A[sa+k-1];
+        }else if(k == 1){
+            return A[sa]<B[sb]?A[sa]:B[sb];
+        }else{
+            int ma = (ea+sa)/2;
+            int mb = (eb+sb)/2;
+            
+            if(A[ma]<B[mb]){
+                if((m/2+n/2+1) >=k )
+                    return findMedianH(A, sa, ea, B, sb, mb, k);
+                else
+                    return findMedianH(A, ma+1, ea, B, sb, eb, k-m/2-1);
+            }else{
+                if((m/2+n/2+1) >=k )
+                    return findMedianH(A, sa, ma, B, sb, eb, k);
+                else
+                    return findMedianH(A, sa, ea, B, mb+1, eb, k-n/2-1);
+            }
+        }
+    }
+}
