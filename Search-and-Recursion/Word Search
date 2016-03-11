@@ -1,0 +1,57 @@
+/*
+Given board =
+
+[
+  "ABCE",
+  "SFCS",
+  "ADEE"
+]
+word = "ABCCED", -> returns true,
+word = "SEE", -> returns true,
+word = "ABCB", -> returns false.
+
+
+check for special case, one char grid and one char string
+
+['z'], "z"
+*/
+public class Solution {
+    /**
+     * @param board: A list of lists of character
+     * @param word: A string
+     * @return: A boolean
+     */
+    public boolean exist(char[][] board, String word) {
+        if(board == null || board.length == 0) return false;
+        else if(word == null || word.length() == 0) return true;
+        
+        int m = board.length;
+        int n = board[0].length;
+        for(int i = 0; i<m; i++){
+            for(int j = 0; j<n; j++){
+                if(board[i][j] == word.charAt(0)){
+                    if(match(board, word, i, j, m, n, 0))
+                        return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+    public boolean match(char[][] board, String word, int x, int y, int m, int n, int sid){
+        if(sid == word.length()) return true;
+        else if(x<0 || x>=m || y<0 || y>=n || board[x][y] == '#' ) return false;
+        else if(board[x][y] != word.charAt(sid)) return false;
+        else{
+            char temp = board[x][y];
+            board[x][y] = '#';
+            if(match(board, word, x+1, y, m, n, sid+1) 
+               || match(board, word, x-1, y, m, n, sid+1) 
+               || match(board, word, x, y+1, m, n, sid+1) 
+               || match(board, word, x, y-1, m, n, sid+1) )
+                return true;
+            board[x][y] = temp;
+            return false;
+        }
+    }
+}
