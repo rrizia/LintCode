@@ -1,0 +1,49 @@
+/*
+Given n unique integers, number k (1<=k<=n) and target.
+
+Find all possible k integers where their sum is target.
+Given [1,2,3,4], k = 2, target = 5. Return:
+
+[
+  [1,4],
+  [2,3]
+]
+*/
+public class Solution {
+    /**
+     * @param A: an integer array.
+     * @param k: a positive integer (k <= length(A))
+     * @param target: a integer
+     * @return a list of lists of integer 
+     */ 
+    public ArrayList<ArrayList<Integer>> kSumII(int[] A, int k, int target) {
+        ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
+        if(A == null || A.length == 0) return result;
+        
+        int sIdx  = 0;
+        int level = 0;
+        ArrayList<Integer> subList = new ArrayList<Integer>();
+        kSumIIH(A, sIdx, level, k, target, subList, result);
+        return result;
+    }
+    
+    public void kSumIIH(int[] A, int sIdx, int level, int k, int target, ArrayList<Integer> subList, 
+    ArrayList<ArrayList<Integer>> result){
+        if(level == k){
+            ArrayList<Integer> temp = new ArrayList<Integer>(subList);
+            int sum = 0;
+            for(int i = 0; i<temp.size(); i++){
+                sum+=temp.get(i);
+            }
+            if(sum == target){
+                result.add(temp);
+            }
+        }else{
+            for(int i = sIdx; i<A.length; i++){
+                subList.add(A[i]);
+                kSumIIH(A, i+1, level+1, k, target, subList, result);
+                subList.remove(subList.size()-1);
+            }
+        }    
+    }
+}
