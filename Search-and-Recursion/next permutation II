@@ -1,0 +1,43 @@
+public class Solution {
+    /**
+     * @param nums: an array of integers
+     * @return: return nothing (void), do not return anything, modify nums in-place instead
+     */
+    public void nextPermutation(int[] nums) {
+        if(nums == null || nums.length == 0) return;
+        int firstDec = nums.length-2;
+        while(firstDec>=0 && nums[firstDec] >= nums[firstDec+1])
+            firstDec--;
+        
+        //System.out.println(nums[firstDec]+" first Dec : "+firstDec);
+        
+        if(firstDec>=0){
+            int smallestGreater = firstDec+1;
+            while(smallestGreater<nums.length && nums[smallestGreater] > nums[firstDec])
+                smallestGreater++;
+            
+            smallestGreater--;
+            //System.out.println(nums[smallestGreater]+" smallestGreater "+smallestGreater);
+            
+            int temp = nums[smallestGreater];
+            nums[smallestGreater] = nums[firstDec];
+            nums[firstDec] = temp;
+            
+            int i = firstDec+1;
+            int j = nums.length-1;
+            while(i<j){
+                temp = nums[i];
+                nums[i++]  = nums[j];
+                nums[j--]  = temp;
+            }
+        }else{
+            int i = 0;
+            int j = nums.length-1;
+            while(i<j){
+                int temp = nums[i];
+                nums[i++]  = nums[j];
+                nums[j--]  = temp;
+            }
+        }
+    }
+}
