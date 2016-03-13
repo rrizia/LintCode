@@ -1,0 +1,90 @@
+/*
+test cases: n=2, [[1, 0]]
+n =2 , [];
+n = 1, []
+
+The key is: the graph can have disconnected componenets. in this case it is not a valid tree. 
+You can check only one component and mark all the nodes of that component as visited.
+Next time if you find any of the graph node not visited you know that it has disconnected component and not a valid tree.
+
+The steps are:
+for i = 0 to [n-1] build the graph nodes
+fill in the childrens for each node. The parent child relation is both way
+pick the node for label 0 and do a bfs
+mark the distance of each node from its parent and also mark visited
+if at any time any node has same distance as its parent you know it is a cycle
+
+next check if any graph node is unvisited
+
+*/
+
+public class Solution {
+    /**
+     * @param n an integer
+     * @param edges a list of undirected edges
+     * @return true if it's a valid tree, or false
+     */
+    class UndirectedGraphNode{
+        int label;
+        int dis;
+        ArrayList<UndirectedGraphNode> neighbors;
+        
+        public UndirectedGraphNode(int x){
+            label = x;
+            dis = Integer.MIN_VALUE;
+            neighbors = new ArrayList<UndirectedGraphNode>();
+        }
+    }
+    public boolean validTree(int n, int[][] edges) {
+        if(n<=0) return true;
+        Map<Integer, UndirectedGraphNode> nodes = new HashMap<Integer, UndirectedGraphNode>();
+        fillNodes(n, nodes);
+        fillNeighbors(nodes, edges);
+        return bfs(nodes.get(0), nodes);
+        
+    }
+    
+    public boolean bfs(UndirectedGraphNode node, Map<Integer, UndirectedGraphNode> nodes){
+        Set<UndirectedGraphNode> visited = new HashSet<UndirectedGraphNode>();
+        LinkedList<UndirectedGraphNode> q = new LinkedList<UndirectedGraphNode>();
+        node.dis = 0;
+        q.offer(node);
+        visited.add(node);
+        
+        while(!q.isEmpty()){
+            UndirectedGraphNode cur = q.poll();
+            
+            for(UndirectedGraphNode un:cur.neighbors){
+                if(un.dis == cur.dis) return false;
+                if(!visited.contains(un)){
+                    un.dis = cur.dis+1;
+                    q.offer(un);
+                    visited.add(un);
+                }
+            }
+        }
+        
+        for(Integer i: nodes.keySet()){
+            if(!visited.contains(nodes.get(i)))
+                return false;
+        }
+        return true;
+    }
+    
+    public void fillNeighbors(Map<Integer, UndirectedGraphNode> nodes, int[][] edges){
+        
+        for(int i = 0; i<edges.length; i++){
+            UndirectedGraphNode u1 = nodes.get(edges[i][0]);
+            UndirectedGraphNode u2 = nodes.get(edges[i][1]);
+            u1.neighbors.add(u2);
+            u2.neighbors.add(u1);
+        }
+    }
+    
+    public void fillNodes(int n, Map<Integer, UndirectedGraphNode> nodes){
+        for(int i = 0; i<n; i++){
+            UndirectedGraphNode un = new UndirectedGraphNode(i);
+            nodes.put(i, un);
+        }
+    }
+}
