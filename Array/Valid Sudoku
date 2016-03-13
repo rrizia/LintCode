@@ -1,0 +1,47 @@
+class Solution {
+    /**
+      * @param board: the board
+        @return: wether the Sudoku is valid
+      */
+    public boolean isValidSudoku(char[][] board) {
+        if(board == null || board.length == 0) return false;
+        
+        for(int row = 0; row<9; row++){
+            Set<Character> set = new HashSet<Character>();
+            for(int col = 0; col<9; col++){
+                if(board[row][col] != '.'){
+                    if(!set.contains(board[row][col]))
+                        set.add(board[row][col]);
+                    else return false;
+                }
+            }
+        }
+        
+        for(int col = 0; col<9; col++){
+            Set<Character> set = new HashSet<Character>();
+            for(int row = 0; row<9; row++){
+                if(board[row][col] != '.'){
+                    if(!set.contains(board[row][col]))
+                        set.add(board[row][col]);
+                    else return false;
+                }
+            }
+        }
+        
+        for(int I = 0; I<3; I++){
+            for(int J = 0; J<3; J++){
+                Set<Character> set = new HashSet<Character>();
+                for(int i = 0; i<3; i++){
+                    for(int j = 0; j<3; j++){
+                        if(board[I*3+i][J*3+j] != '.'){
+                            if(!set.contains(board[I*3+i][J*3+j]))
+                                set.add(board[I*3+i][J*3+j]);
+                            else return false;
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
+};
