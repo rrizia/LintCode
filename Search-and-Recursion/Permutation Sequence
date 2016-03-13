@@ -1,0 +1,43 @@
+/*
+    We can generate all permutations until we get the kth one. But it costs O(n!)O(n!) time.
+We fix each digit at a time. First we need to find the first digit from [1 to n]
+first digit will hold [1 to n] and each [1 to n] will have remaning (n-1)! permutation to its right
+so if we do k/(n-1)!, it meand we are trying to give (n-1)! to each 1-k, and this is equaivalent to how many (n-1)! group we have upto k and the first digit of k is equivalent to that number
+
+Another way is to calculate every digit. For example, assuming we are going to solve the problem when n = 3 and k = 5. In fact, because k starts from 1, we need to subtract 1 from it to make it starting from 0. So we are going to find the permutation 4 now. To calculate the first digit, we can calculate it by k / (n – 1)! = 4 / 2! = 2, which is the position of 3 in array [1,2,3]. Now we need to delete 3 from the array, so the array becomes [1, 2]. And k should become 4 % 2! = 0. Now we calculate k / (n – 2)! = 0 / 1 = 0, which is the position of 1 in array [1, 2]. So the second digit should be 1. We need to delete 1 from the array. And there is only one entry left in the array. So the final digit should be 2. Finally we get the permutation: 312.
+
+Simulation: n = 3, arr = {1, 2, 3} k = 5; arr indices starts from 0 so k-- so that permutations start from 0 - (n!-1)
+# total permutations 1*2!+1*2!+1*2! = 3*2! = 6 [0...5] so if I do (--k)/(n-1)! I get the current digit
+#Now we need to find the first digit of the target permutation
+#it can be any digit i from arr multiplied by (n-1)!, which is i*(n-1)!// if we fis one digit there are two more digits left and so (n-1)! remains for each of the candidate digits
+# j = k/(n-1)! will be the current digit
+and k = k%(n-1)!, because I am left with n-1 digits and there are 2! posible permutations
+    */
+
+class Solution {
+    /**
+      * @param n: n
+      * @param k: the kth permutation
+      * @return: return the k-th permutation
+      */
+    public String getPermutation(int n, int k) {
+        if(n<=0 || k<0) return "";
+        ArrayList<Integer> digits = new ArrayList<Integer>();
+        int fact = 1;
+        for(int i = 1; i<=n; i++){
+            fact*=i;
+            digits.add(i);
+        }
+        
+        k--;
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i<n; i++){
+            fact = fact/(n-i);
+            int index = k/fact;
+            sb.append(digits.get(index));
+            digits.remove(index);
+            k = k%fact;
+        }
+        return sb.toString();
+    }
+}
