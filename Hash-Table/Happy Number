@@ -1,0 +1,29 @@
+public class Solution {
+    /**
+     * @param n an integer
+     * @return true if this is a happy number or false
+     */
+    public boolean isHappy(int n) {
+        if(n<=0) return false;
+        else if(n == 1) return true;
+        Set<Integer> map = new HashSet<Integer>();
+        map.add(n);
+        
+        while(n != 1){
+            int sum = 0;
+            while(n>0){
+                int mod = n%10;
+                n = n/10;
+                sum+= (mod*mod);
+            }
+            if(sum == 1) return true;
+            else if(map.contains(sum))
+                    return false;
+            else{
+                map.add(sum);
+                n = sum;
+            }
+        }
+        return false;
+    }
+}
