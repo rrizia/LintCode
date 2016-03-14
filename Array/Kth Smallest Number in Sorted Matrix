@@ -1,0 +1,67 @@
+/*
+Find the kth smallest number in at row and column sorted matrix.
+Given k = 4 and a matrix:
+
+[
+  [1 ,5 ,7],
+  [3 ,7 ,8],
+  [4 ,8 ,9],
+]
+return 5
+*/
+
+public class Solution {
+    /**
+     * @param matrix: a matrix of integers
+     * @param k: an integer
+     * @return: the kth smallest number in the matrix
+     */
+    /*
+    View the matrix as a List of sorted lists. Each colum represents a sorted list from top to bottom
+    */
+    class HeapNode{
+        int num;
+        int row;
+        int col;
+        
+        public HeapNode(int n, int r, int c){
+            num = n;
+            row = r;
+            col = c;
+        }
+    }
+    
+    class MinHeapComparator implements Comparator<HeapNode>{
+        public int compare(HeapNode h1, HeapNode h2){
+            return h1.num-h2.num;
+        }
+    }
+    public int kthSmallest(int[][] matrix, int k) {
+        if(matrix == null || matrix.length == 0 || k<=0) return -1;
+        int m = matrix.length;
+        int n = matrix[0].length;
+        
+        PriorityQueue<HeapNode> minHeap = new PriorityQueue<HeapNode>(n, new MinHeapComparator());
+        for(int col = 0; col<n; col++){
+            HeapNode hn = new HeapNode(matrix[0][col], 0, col);
+            minHeap.offer(hn);
+        }
+        
+        int c = 0;
+        while(c<k && !minHeap.isEmpty()){
+            HeapNode cur = minHeap.poll();
+            c++;
+            if(c == k)
+                return cur.num;
+            else{
+                int col = cur.col;
+                int row = cur.row;
+                if(row<m-1){
+                    HeapNode hn = new HeapNode(matrix[row+1][col], row+1, col);
+                    minHeap.offer(hn);
+                }
+            }
+        }
+        return -1;
+    }
+}
