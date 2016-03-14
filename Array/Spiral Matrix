@@ -1,0 +1,62 @@
+/*
+Given a matrix of m x n elements (m rows, n columns), return all elements of the matrix in spiral order.
+Given the following matrix:
+
+[
+ [ 1, 2, 3 ],
+ [ 4, 5, 6 ],
+ [ 7, 8, 9 ]
+]
+You should return [1,2,3,6,9,8,7,4,5]
+*/
+
+public class Solution {
+    /**
+     * @param matrix a matrix of m x n elements
+     * @return an integer list
+     */
+    public List<Integer> spiralOrder(int[][] matrix) {
+        List<Integer> result = new ArrayList<Integer>();
+        if(matrix == null || matrix.length == 0) return result;
+        int m = matrix.length;
+        int n = matrix[0].length;
+        
+        if(m == 1){
+            for(int i = 0; i<n; i++)
+                result.add(matrix[0][i]);
+        }else if(n == 1){
+            for(int i = 0; i<m; i++)
+                result.add(matrix[i][0]);
+        }else{
+            int layers = (int)Math.ceil(Math.min(m, n)/2.0);
+            for(int i = 0; i<layers; i++){
+                if(i == layers-1 && n%2 == 1 && m>=n){
+                    for(int j = i; j<=m-1-i; j++){
+                        result.add(matrix[j][i]);
+                    }
+                }else if(i == layers-1 && m%2 == 1 && n>m){
+                    for(int j = i; j<=n-1-i; j++){
+                        result.add(matrix[i][j]);
+                    }
+                }else{
+                    for(int j = i; j<n-1-i; j++){
+                        result.add(matrix[i][j]);
+                    }
+                    
+                    for(int j = i; j<m-1-i; j++){
+                        result.add(matrix[j][n-1-i]);
+                    }
+                    
+                    for(int j = n-1-i; j>i; j--){
+                        result.add(matrix[m-1-i][j]);
+                    }
+                    
+                    for(int j = m-1-i; j>i; j--){
+                        result.add(matrix[j][i]);
+                    }
+                }
+            }
+        }
+        return result;
+    }
+}
