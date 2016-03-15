@@ -1,0 +1,44 @@
+/*
+Given a rotated sorted array, recover it to sorted array in-place.
+What is rotated array?
+
+For example, the orginal array is [1,2,3,4], The rotated array of it can be [1,2,3,4], [2,3,4,1], [3,4,1,2], [4,1,2,3]
+
+[4, 5, 1, 2, 3] -> [1, 2, 3, 4, 5]
+*/
+
+public class Solution {
+    /**
+     * @param nums: The rotated sorted array
+     * @return: void
+     */
+    public void recoverRotatedSortedArray(ArrayList<Integer> nums) {
+        if(nums == null || nums.size() <= 1) return;
+        int s1 = 0;
+        int e1 = s1+1;
+        
+        int cur = nums.get(s1);
+        while(e1<nums.size() && nums.get(e1) >= cur){
+            cur = nums.get(e1);
+            e1++;
+        }
+        
+        int s2 = e1;
+        e1--;
+        int e2 = nums.size()-1;
+        reverse(nums, s1, e1);
+        reverse(nums, s2, e2);
+        reverse(nums, 0, nums.size()-1);
+    }
+    
+    public void reverse(ArrayList<Integer> nums, int s, int e){
+        if(s>=e) return;
+        else{
+            while(s<e){
+                int temp = nums.get(e);
+                nums.set(e--, nums.get(s));
+                nums.set(s++, temp);
+            }
+        }
+    }
+}
