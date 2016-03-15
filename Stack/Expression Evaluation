@@ -1,0 +1,69 @@
+/*
+For the expression 2*6-(23+7)/(1+2),
+input is
+
+[
+  "2", "*", "6", "-", "(",
+  "23", "+", "7", ")", "/",
+  (", "1", "+", "2", ")"
+],
+return 2
+
+take care of special case like [((((((()))))))];
+*/
+
+public class Solution {
+    /**
+     * @param expression: an array of strings;
+     * @return: an integer
+     */
+    public int evaluateExpression(String[] exp) {
+        if(exp == null || exp.length == 0) return 0;
+        Stack<Integer> vals = new Stack<Integer>();
+        Stack<Character> ops = new Stack<Character>();
+        
+        for(int i = 0; i<exp.length; i++){
+            String cur = exp[i];
+            
+            if(cur.equals("(")) ops.push(cur.charAt(0));
+            else if(cur.equals("+") || cur.equals("*") || cur.equals("/") || cur.equals("-")){
+                while(!ops.isEmpty() && hasPrecedence(cur.charAt(0), ops.peek())){
+                    vals.push(applyOp(vals.pop(), vals.pop(), ops.pop()));
+                }
+                ops.push(cur.charAt(0));
+            }else if(cur.equals(")")){
+                while(ops.peek() != '('){
+                    vals.push(applyOp(vals.pop(), vals.pop(), ops.pop()));
+                }
+                ops.pop();
+            }else{
+                vals.push(Integer.parseInt(cur));
+            }
+        }
+        
+        while(!ops.isEmpty()){
+            vals.push(applyOp(vals.pop(), vals.pop(), ops.pop()));
+        }
+        return vals.isEmpty()?0:vals.pop();
+    }
+    
+    public boolean hasPrecedence(char op1, char op2){
+        if(op2 == '(' || op2 == ')')
+            return false;
+        else if((op2 == '+' || op2 == '-') && (op1 == '*' || op1 == '/'))
+            return false;
+        else return true;
+    }
+    
+    public int applyOp(int n1, int n2, char op){
+        switch(op){
+            case '+': return n1+n2;
+            case '-': return n2-n1;
+            case '*': return n1*n2;
+            case '/':
+                if(n1 == 0) throw new ArithmeticException();
+                else return n2/n1;
+            default: return 0;
+        }
+    }
+};
