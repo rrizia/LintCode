@@ -1,0 +1,30 @@
+public class MinStack {
+    private Stack<Integer> minSt;
+    private Stack<Integer> st;
+    public MinStack() {
+        // do initialize if necessary
+        minSt = new Stack<Integer>();
+        st = new Stack<Integer>();
+    }
+
+    public void push(int number) {
+        // write your code here
+        st.push(number);
+        if(minSt.isEmpty() || number <=min())
+            minSt.push(number);
+    }
+
+    public int pop() {
+        // write your code here
+        int top = st.pop();
+        if(top<=min()){
+            minSt.pop();
+        }
+        return top;
+    }
+
+    public int min() {
+        // write your code here
+        return minSt.peek();
+    }
+}
