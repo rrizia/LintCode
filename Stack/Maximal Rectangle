@@ -1,0 +1,65 @@
+/*
+Given a matrix:
+
+[
+  [1, 1, 0, 0, 1],
+  [0, 1, 0, 0, 1],
+  [0, 0, 1, 1, 1],
+  [0, 0, 1, 1, 1],
+  [0, 0, 0, 0, 1]
+]
+return 6.
+*/
+
+public class Solution {
+    /**
+     * @param matrix a boolean 2D matrix
+     * @return an integer
+     */
+    public int maximalRectangle(boolean[][] matrix) {
+        if(matrix == null || matrix.length == 0) return 0;
+        int m = matrix.length;
+        int n = matrix[0].length;
+        
+        int[][] h = new int[m][n];
+        for(int i = 0; i<m; i++){
+            for(int j = 0; j<n; j++){
+                if(matrix[i][j] == true){
+                    h[i][j] = (i==0)?1:h[i-1][j]+1;
+                }else{
+                    h[i][j] = 0;
+                }
+            }
+        }
+        
+        int maxArea = 0;
+        for(int i = 0; i<m; i++){
+            maxArea = Math.max(maxArea, getArea(h[i]));
+        }
+        return maxArea;
+    }
+    
+    public int getArea(int[] h){
+        if(h == null || h.length == 0) return 0;
+        int max = 0;
+        Stack<Integer> st = new Stack<Integer>();
+        int i = 0;
+        
+        while(i<h.length){
+            if(st.isEmpty() || h[st.peek()] <= h[i]){
+                st.push(i++);
+            }else{
+                int height = h[st.pop()];
+                int width = st.isEmpty()?i: i - st.peek()-1;
+                max = Math.max(max, height*width);
+            }
+        }
+        
+        while(!st.isEmpty()){
+            int height = h[st.pop()];
+            int width = st.isEmpty()?i: i - st.peek()-1;
+            max = Math.max(max, height*width);
+        }
+        return max;
+    }
+}
