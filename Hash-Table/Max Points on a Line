@@ -1,0 +1,66 @@
+/*
+Given n points on a 2D plane, find the maximum number of points that lie on the same straight line.
+
+Given 4 points: (1,2), (3,6), (0,0), (1,3).
+
+The maximum number is 3.
+*/
+
+/**
+ * Definition for a point.
+ * class Point {
+ *     int x;
+ *     int y;
+ *     Point() { x = 0; y = 0; }
+ *     Point(int a, int b) { x = a; y = b; }
+ * }
+ */
+public class Solution {
+    /**
+     * @param points an array of point
+     * @return an integer
+     */
+    public int maxPoints(Point[] points) {
+        if(points == null || points.length == 0) return 0;
+        int max = 0;
+        for(int i = 0; i<points.length; i++){
+            int xi = points[i].x;
+            int yi = points[i].y;
+            int duplicate = 1;
+            int vertical = 0;
+            
+            Map<Double, Integer> map = new HashMap<Double, Integer>();
+            
+            for(int j = i+1; j<points.length; j++){
+                int xj = points[j].x;
+                int yj = points[j].y;
+                
+                if(xi == xj){
+                    if(yi == yj){
+                        duplicate++;
+                    }else{
+                        vertical++;
+                    }
+                }else{
+                    double slope = 0.0;
+                    if(yi != yj){
+                        slope = (double)(yi-yj)/(double)(xi-xj);
+                    }
+                    
+                    if(!map.containsKey(slope)){
+                        map.put(slope, 1);
+                    }else{
+                        map.put(slope, map.get(slope)+1);
+                    }
+                }
+            }
+            
+            for(int in:map.values()){
+                max = Math.max(in+duplicate, max);
+            }
+            
+            max = Math.max(duplicate+vertical, max);
+        }
+        return max;
+    }
+}
