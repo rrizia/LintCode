@@ -1,0 +1,28 @@
+public class Solution {
+    /**
+     * @param obstacleGrid: A list of lists of integers
+     * @return: An integer
+     */
+    public int uniquePathsWithObstacles(int[][] oG) {
+        if(oG == null || oG.length == 0) return 0;
+        int m = oG.length;
+        int n = oG[0].length;
+        
+        if(oG[0][0] == 1 || oG[m-1][n-1] == 1) return 0;
+        int[][] dp = new int[m][m];
+        dp[0][0] = 1;
+        return pathCount(oG, dp, m-1, n-1, m, n);
+    }
+    
+    public int pathCount(int[][] oG, int[][] dp, int x, int y, int m, int n){
+        if(x<0 || x>=m || y<0 || y>=n || oG[x][y] == 1) return 0;
+        else if(dp[x][y] > 0) return dp[x][y];
+        else{
+            int c = 0;
+            c+=pathCount(oG, dp, x-1, y, m, n);
+            c+=pathCount(oG, dp, x, y-1, m, n);
+            dp[x][y] = c;
+            return dp[x][y];
+        }
+    }
+}
