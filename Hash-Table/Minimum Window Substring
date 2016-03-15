@@ -1,0 +1,67 @@
+/*
+For source = "ADOBECODEBANC", target = "ABC", the minimum window is "BANC"
+*/
+public class Solution {
+    /**
+     * @param source: A string
+     * @param target: A string
+     * @return: A string denote the minimum window
+     *          Return "" if there is no such a string
+     */
+    public String minWindow(String source, String target) {
+        if(source == null || target == null) return null;
+        else if(source.length() == 0 || target.length() == 0) return "";
+        else if(target.length() > source.length()) return "";
+        
+        Map<Character, Integer> targetMap = new HashMap<Character, Integer>();
+        
+        for(int i = 0; i<target.length(); i++){
+            char c = target.charAt(i);
+            if(!targetMap.containsKey(c)){
+                targetMap.put(c, 1);
+            }else{
+                targetMap.put(c, targetMap.get(c)+1);
+            }
+        }
+        
+        int minLen = source.length()+1;
+        String result = "";
+        int tLen = target.length();
+        int count  = 0;
+        int start = 0;
+        Map<Character, Integer> seen = new HashMap<Character, Integer>();
+        
+        for(int i = 0; i<source.length(); i++){
+            char c = source.charAt(i);
+            if(targetMap.containsKey(c)){
+                if(!seen.containsKey(c)){
+                    seen.put(c, 1);
+                    count++;
+                }else{
+                    if(seen.get(c) < targetMap.get(c)){
+                        count++;
+                    }
+                    seen.put(c, seen.get(c)+1);
+                }
+            }
+            
+            if(count == tLen){
+                char first = source.charAt(start);
+                while(!targetMap.containsKey(first) || targetMap.get(first) < seen.get(first)){
+                    if(targetMap.containsKey(first) && targetMap.get(first) < seen.get(first)){
+                        seen.put(first, seen.get(first)-1);    
+                    }
+                    start++;
+                    first = source.charAt(start);
+                }
+                
+                int len = i-start+1;
+                if(len < minLen){
+                    minLen = len;
+                    result = source.substring(start, i+1);
+                }
+            }
+        }
+        return result;
+    }
+}
