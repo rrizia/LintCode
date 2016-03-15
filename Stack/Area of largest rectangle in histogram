@@ -1,0 +1,33 @@
+public class Solution {
+    /**
+     * @param height: A list of integer
+     * @return: The area of largest rectangle in the histogram
+     */
+    /*
+    the reason for using stack (and not an inner loop) is:
+    I need to store an increasing sequence of height to get the max area with lowest height
+    so I need to know where the increasing sequence is starting and I do not want to go back till 0th index
+    */
+    public int largestRectangleArea(int[] h) {
+        if(h == null || h.length == 0) return 0;
+        Stack<Integer> st = new Stack<Integer>();
+        int maxArea = Integer.MIN_VALUE;
+        int i = 0;
+        while(i<h.length){
+            if(st.isEmpty() || h[st.peek()] <= h[i])
+                st.push(i++);
+            else{
+                int height = h[st.pop()];
+                int width = st.isEmpty()?i: i - st.peek()-1;
+                maxArea = Math.max(maxArea, height*width);
+            }
+        }
+        
+        while(!st.isEmpty()){
+            int height = h[st.pop()];
+            int width = st.isEmpty()?i: i - st.peek()-1;
+            maxArea = Math.max(maxArea, height*width);
+        }
+        return maxArea;
+    }
+}
