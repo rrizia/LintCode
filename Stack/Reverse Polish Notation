@@ -1,0 +1,51 @@
+/*
+Evaluate the value of an arithmetic expression in Reverse Polish Notation.
+
+Valid operators are +, -, *, /. Each operand may be an integer or another expression.
+
+["2", "1", "+", "3", "*"] -> ((2 + 1) * 3) -> 9
+["4", "13", "5", "/", "+"] -> (4 + (13 / 5)) -> 6
+*/
+public class Solution {
+    /**
+     * @param tokens The Reverse Polish Notation
+     * @return the value
+     */
+    public int evalRPN(String[] tokens) {
+        if(tokens == null || tokens.length == 0) return -1;
+        Stack<Integer> st = new Stack<Integer>();
+        for(int i = 0; i<tokens.length; i++){
+            String cur = tokens[i];
+            if(cur.equals("+") || cur.equals("-") || cur.equals("*") || cur.equals("/")){
+                if(st.isEmpty()) return -1;
+                int n1 = st.pop();
+                if(st.isEmpty()) return -1;
+                int n2 = st.pop();
+                st.push(applyOp(n1, n2, cur.charAt(0)));
+            }else{
+                int n = -1;
+                try{
+                    n = Integer.parseInt(cur);
+                }catch(NumberFormatException e){
+                    return -1;
+                }
+                st.push(n);
+            }
+        }
+        if(st.isEmpty()) return -1;
+        return st.pop();
+    }
+    
+    public int applyOp(int n1, int n2, char c){
+        switch(c){
+            case '+': return n1+n2;
+            case '-': return n2 - n1;
+            case '*': return n1*n2;
+            case '/':
+                if(n1 == 0)
+                    throw new ArithmeticException();
+                else return n2/n1;
+            default: return 0;
+        }
+    }
+}
