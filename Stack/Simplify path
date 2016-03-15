@@ -1,0 +1,47 @@
+/*
+"/home/", => "/home"
+
+"/a/./b/../../c/", => "/c"
+*/
+
+public class Solution {
+    /**
+     * @param path the original path
+     * @return the simplified path
+     */
+    public String simplifyPath(String path) {
+        if(path == null || path.length() == 0) return path;
+        int i = path.length()-1;
+        while(i>0 && path.charAt(i) == '/')
+            i--;
+        path = path.substring(0, i+1);
+        
+        Stack<String> st = new Stack<String>();
+        int start = 0;
+        int end = start+1;
+        while(end<path.length()){
+            while(end<path.length() && path.charAt(end) != '/')
+                end++;
+            st.push(path.substring(start, end));
+            start = end++;
+        }
+        
+        int back = 0;
+        StringBuilder sb = new StringBuilder();
+        while(!st.isEmpty()){
+            String cur = st.pop();
+            if(cur.equals("/") || cur.equals("/."))
+                continue;
+            else if(cur.equals("/.."))
+                back++;
+            else{
+                if(back>0)
+                    back--;
+                else
+                    sb.insert(0, cur);
+            }
+        }
+        if(sb.length() == 0) return "/";
+        return sb.toString();
+    }
+}
