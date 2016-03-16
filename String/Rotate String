@@ -1,0 +1,25 @@
+public class Solution {
+    /**
+     * @param str: an array of char
+     * @param offset: an integer
+     * @return: nothing
+     */
+    public void rotateString(char[] str, int offset) {
+        if(offset == 0) return;
+        else if(str == null || str.length == 0) return;
+        offset = offset%str.length;
+        reverse(str, 0, str.length-1);
+        reverse(str, 0, offset-1);
+        reverse(str, offset, str.length-1);
+    }
+    
+    public void reverse(char[] c, int s, int e){
+        if(c == null || c.length == 0) return;
+        if(s>=e) return;
+        while(s<e){
+            char temp = c[s];
+            c[s++] = c[e];
+            c[e--] = temp;
+        }
+    }
+}
