@@ -1,0 +1,17 @@
+public class Solution {
+    /**
+     * @param prices: Given an integer array
+     * @return: Maximum profit
+     */
+    public int maxProfit(int[] prices) {
+        if(prices == null || prices.length <=1) return 0;
+        int minEle = Integer.MAX_VALUE;
+        int maxProfit = Integer.MIN_VALUE;
+        
+        for(int i = 0; i<prices.length; i++){
+            minEle = Math.min(prices[i], minEle);
+            maxProfit = Math.max(maxProfit, prices[i]-minEle);
+        }
+        return maxProfit;
+    }
+}
