@@ -1,0 +1,40 @@
+public class Solution {
+    /**
+     * @param s1 A string
+     * @param s2 Another string
+     * @return whether s2 is a scrambled string of s1
+     */
+    public boolean isScramble(String s1, String s2) {
+        if((s1 == null && s2 == null) || (s1.length() == 0 && s2.length() == 0)) return true;
+        else if(s1 == null || s2 == null) return false;
+        else if(s1.length() != s2.length()) return false;
+        else if(s1.equals(s2)) return true;
+        
+        int[] counter = new int[26];
+        
+        for(int i = 0; i<s1.length(); i++){
+            counter[(int)(s1.charAt(i)-'a')]++;
+            counter[(int)(s2.charAt(i)-'a')]--;
+        }
+        
+        for(int i = 0; i<counter.length; i++){
+            if(counter[i] != 0) return false;
+        }
+        
+        for(int i = 1; i<s1.length(); i++){
+            String s11 = s1.substring(0, i);
+            String s12 = s1.substring(i);
+            
+            String s21 = s2.substring(0, i);
+            String s22 = s2.substring(i);
+            
+            if(isScramble(s11, s21) && isScramble(s12, s22)) return true;
+            
+            s21 = s2.substring(0, s2.length()-i);
+            s22 = s2.substring(s2.length()-i);
+            
+            if(isScramble(s11, s22) && isScramble(s12, s21)) return true;
+        }
+        return false;
+    }
+}
