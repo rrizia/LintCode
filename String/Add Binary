@@ -1,0 +1,42 @@
+public class Solution {
+    /**
+     * @param a a number
+     * @param b a number
+     * @return the result
+     */
+    public String addBinary(String a, String b) {
+        if(a == null && b == null) return null;
+        else if(a.length() == 0 && b.length() == 0) return "";
+        else if(a.length() == 0 || b.length() == 0) return a.length()==0?b:a;
+        
+        StringBuilder sb = new StringBuilder();
+        int i = a.length()-1;
+        int j = b.length()-1;
+        int c = 0;
+        while(i>=0 || j>=0){
+            int sum = c;
+            if(i>=0){
+                sum+= (int)(a.charAt(i)-'0');
+                i--;
+            }
+            if(j>=0){
+                sum+= (int)(b.charAt(j)-'0');
+                j--;
+            }
+            if(sum>=2){
+                c = 1;
+                sb.insert(0, sum-2);
+            }else{
+                c = 0;
+                sb.insert(0, sum);
+            }
+            
+        }
+        
+        if(c>0)
+            sb.insert(0, c);
+        
+        while(sb.length() > 1 && sb.charAt(0) == '0') sb.deleteCharAt(0);
+        return sb.toString();
+    }
+}
