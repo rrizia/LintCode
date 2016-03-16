@@ -1,0 +1,45 @@
+public class Solution {
+    /**
+     * @param s Roman representation
+     * @return an integer
+     */
+    public int romanToInt(String s) {
+        if(s == null || s.length() == 0) return 0;
+        Map<String, Integer> map = new HashMap<String, Integer>();
+        makeHash(map);
+        
+        int num = 0;
+        for(int i = 0; i<s.length(); i++){
+            String cur = s.substring(i, i+1);
+            if((cur.equals("I") || cur.equals("X") || cur.equals("C")) && i<s.length()-1){
+                String temp = s.substring(i, i+2);
+                if(map.containsKey(temp)){
+                    num+=map.get(temp);
+                    i++;
+                }else{
+                    num += map.get(cur);
+                }
+            }else{
+                num+=map.get(cur);
+            }
+        }
+        return num;
+    }
+    
+    public void makeHash(Map<String, Integer> map){
+        map.put("I", 1);
+        map.put("IV", 4);
+        map.put("V", 5);
+        map.put("IX", 9);
+        map.put("X", 10);
+        map.put("I", 1);
+        map.put("XL", 40);
+        map.put("L", 50);
+        map.put("XC", 90);
+        map.put("C", 100);
+        map.put("CD", 400);
+        map.put("D", 500);
+        map.put("CM", 900);
+        map.put("M", 1000);
+    }
+}
