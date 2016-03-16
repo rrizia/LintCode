@@ -1,0 +1,46 @@
+/*
+Given a dictionary, find all of the longest words in the dictionary.
+Given
+
+{
+  "dog",
+  "google",
+  "facebook",
+  "internationalization",
+  "blabla"
+}
+the longest words are(is) ["internationalization"].
+
+Given
+
+{
+  "like",
+  "love",
+  "hate",
+  "yes"
+}
+the longest words are ["like", "love", "hate"].
+
+*/
+
+class Solution {
+    /**
+     * @param dictionary: an array of strings
+     * @return: an arraylist of strings
+     */
+    ArrayList<String> longestWords(String[] dict) {
+        if(dict == null || dict.length == 0 ) return new ArrayList<String>();
+        Map<Integer, ArrayList<String>> map = new HashMap<Integer, ArrayList<String>>();
+        int max = 0;
+        
+        for(int i = 0; i<dict.length; i++){
+            max = Math.max(max, dict[i].length());
+            if(!map.containsKey(dict[i].length())){
+                map.put(dict[i].length(), new ArrayList<String>());
+            }
+            map.get(dict[i].length()).add(dict[i]);
+        }
+        
+        return map.get(max);
+    }
+};
