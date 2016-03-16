@@ -1,0 +1,27 @@
+/*
+Given a string which contains only letters. Sort it by lower case first and upper case second.
+For "abAcD", a reasonable answer is "acbAD"
+*/
+public class Solution {
+    /** 
+     *@param chars: The letter array you should sort by Case
+     *@return: void
+     */
+    public void sortLetters(char[] chars) {
+        if(chars == null || chars.length == 0) return;
+        int l = 0;
+        int u = chars.length-1;
+        int index = 0;
+        
+        while(index<=u){
+            char c = chars[index];
+            if(c>='a' && c<='z'){
+                chars[index++] = chars[l];
+                chars[l++] = c;
+            }else{
+                chars[index] = chars[u];
+                chars[u--] = c;
+            }
+        }
+    }
+}
