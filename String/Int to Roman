@@ -1,0 +1,24 @@
+public class Solution {
+    /**
+     * @param n The integer
+     * @return Roman representation
+     */
+    public String intToRoman(int n) {
+        if(n <= 0) return "";
+        int[]    vals = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
+        String[] ch   = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
+        
+        StringBuilder sb = new StringBuilder();
+        
+        int i = 0;
+        while(n>0){
+            int cur = vals[i];
+            while(n>=cur){
+                n-=cur;
+                sb.append(ch[i]);
+            }
+            i++;
+        }
+        return sb.toString();
+    }
+}
