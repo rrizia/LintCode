@@ -1,0 +1,35 @@
+public class Solution {
+    /**
+     * @param s input string
+     * @return the longest palindromic substring
+     */
+    public String longestPalindrome(String s) {
+        if(s == null || s.length() == 0) return "";
+        if(s.length() == 1) return s;
+        String max = "";
+        
+        for(int i = 0; i<s.length()-1; i++){
+            String s1 = getPalSub(s, i, i);
+            String s2 = getPalSub(s, i, i+1);
+            
+            if(s1.length() > max.length()){
+                max = s1;
+            }
+            
+            if(s2.length() > max.length()){
+                max = s2;
+            }
+        }
+        return max;
+    }
+    
+    public String getPalSub(String s, int i, int j){
+        if(s == null || s.length() == 0) return "";
+        while(i>=0 && j<s.length() && s.charAt(i) == s.charAt(j)){
+            i--;
+            j++;
+        }
+        i++;
+        return s.substring(i, j);
+    }
+}
