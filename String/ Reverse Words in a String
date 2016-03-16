@@ -1,0 +1,47 @@
+public class Solution {
+    /**
+     * @param s : A string
+     * @return : A string
+     */
+    public String reverseWords(String s) {
+        if(s == null || s.length() == 0) return "";
+        s = s.trim();
+        char[] c = s.toCharArray();
+        reverse(c, 0, c.length-1);
+        int start = 0;
+        int end = 0;
+        
+        while(start<c.length){
+            while(end<c.length && c[end] != ' ')
+                end++;
+            reverse(c, start, end-1);
+            
+            while(end<c.length && c[end] == ' ')
+                end++;
+            start = end;
+        }
+        
+        int index = 0;
+        int i = 0;
+        
+        while(i<c.length){
+            if(c[i] == ' '){
+                c[index++] = c[i++];
+                while(i<c.length && c[i] == ' ')
+                    i++;
+            }else{
+                c[index++] = c[i++];
+            }
+        }
+        return new String(c, 0, index);
+    }
+    
+    public void reverse(char[] c, int i, int j){
+        if(i>=j) return;
+        while(i<j){
+            char temp = c[i];
+            c[i++] = c[j];
+            c[j--] = temp;
+        }
+    }
+}
