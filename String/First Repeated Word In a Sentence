@@ -1,0 +1,13 @@
+static String firstRepeatedWord(String s) {
+        if(s == null || s.length() == 0) return "";
+        s = s.replaceAll("[!?,]", "");
+        String[] strs = s.split("\\s+");
+        
+        Set<String> set = new HashSet<String>();
+        for(String str: strs){
+            if(!set.contains(str))
+                set.add(str);
+            else return str;
+        }
+        return "";
+    }
