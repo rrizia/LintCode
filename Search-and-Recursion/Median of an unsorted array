@@ -1,0 +1,49 @@
+public class Solution {
+    /**
+     * @param nums: A list of integers.
+     * @return: An integer denotes the middle number of the array.
+     */
+    public int median(int[] nums) {
+        if(nums == null || nums.length == 0) return -1;
+        int n = nums.length;
+        if(n%2 == 0) return getKthElement(nums, 0, n-1, n/2);
+        else return getKthElement(nums, 0, n-1, n/2+1);
+    }
+    
+    public int getKthElement(int[] nums, int s, int e, int k){
+        if(k<0 || k>nums.length || s>e || s<0 || e>=nums.length) return -1;
+        int index = (int)(Math.random() * (e-s)+s);
+        int pivot = nums[index];
+        int pivot_index = partition(nums, s, e, pivot);
+        if(pivot_index == s+k-1) return pivot;
+        else if(pivot_index > s+k-1) return getKthElement(nums, s, pivot_index-1, k);
+        else return getKthElement(nums, pivot_index+1, e, s+k - (pivot_index+1));
+    }
+    
+    public int partition(int[] nums, int s, int e, int pivot){
+        if(s>e || s<0 || e>=nums.length) return -1;
+        int l = s;
+        int h = e;
+        int equal = s;
+        
+        while(equal<=h){
+            if(nums[equal] < pivot){
+                int temp = nums[equal];
+                nums[equal++] = nums[l];
+                nums[l++] = temp;
+            }else if(nums[equal] == pivot){
+                equal++;
+            }else{
+                int temp = nums[equal];
+                nums[equal] = nums[h];
+                nums[h--] = temp;
+            }
+        }
+        
+        for(int i = s; i<=e; i++){
+            if(nums[i] == pivot)
+                return i;
+        }
+        return -1;
+    }
+}
