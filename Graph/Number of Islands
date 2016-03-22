@@ -1,0 +1,33 @@
+public class Solution {
+    /**
+     * @param grid a boolean 2D matrix
+     * @return an integer
+     */
+    public int numIslands(boolean[][] grid) {
+        if(grid == null) return 0;
+        int m = grid.length;
+        if(m == 0) return 0;
+        int n = grid[0].length;
+        
+        int c = 0;
+        
+        for(int i = 0; i<m; i++){
+            for(int j = 0; j<n; j++){
+                if(grid[i][j]){
+                    c++;
+                    dfs(grid, i, j, m, n);
+                }
+            }
+        }
+        return c;
+    }
+    
+    public void dfs(boolean[][] grid, int x, int y, int m, int n){
+        if(x<0 || y<0 || x>=m || y>=n || grid[x][y] != true) return;
+        grid[x][y] = false;
+        dfs(grid, x+1, y, m, n);
+        dfs(grid, x-1, y, m, n);
+        dfs(grid, x, y+1, m, n);
+        dfs(grid, x, y-1, m, n);
+    }
+}
