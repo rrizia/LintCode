@@ -1,0 +1,21 @@
+class Solution {
+    /*
+     * param k : As description.
+     * param n : As description.
+     * return: An integer denote the count of digit k in 1..n
+     */
+    public int digitCounts(int k, int n) {
+        if(k<0 || k>9) return -1;
+        int count = 0;
+        char c = (char)('0'+k);
+        
+        for(int i = 0; i<=n; i++){
+            String cur = String.valueOf(i);
+            for(int j = 0; j<cur.length(); j++){
+                if(cur.charAt(j) == c)
+                    count++;
+            }
+        }
+        return count;
+    }
+};
