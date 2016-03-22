@@ -1,0 +1,39 @@
+/*
+Given a permutation which contains no repeated number, 
+find its index in all the permutations of these numbers, which are ordered in lexicographical order. The index begins at 1.
+Given [1,2,4], return 1.
+*/
+public class Solution {
+    /**
+     * @param A an integer array
+     * @return a long integer
+     */
+    public long permutationIndex(int[] A) {
+        if(A == null || A.length == 0) return 0;
+        long res = 0;
+        int n = A.length;
+        
+        long fact = 1;
+        
+        for(int i = 1; i<n; i++){
+            fact *= i;//fact is holding (n-1)!
+        }
+        
+        int denom = n-1;
+        for(int i = 0; i<n; i++){
+            int count = 0;
+            for(int j = i+1; j<n; j++){
+                if(A[i] > A[j])
+                    count++;
+            }
+            
+            res += count*fact;
+            if(denom > 0){
+                fact/=denom;
+                denom--;
+            }
+        }
+        return ++res;
+    }
+}
+
