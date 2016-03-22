@@ -1,0 +1,26 @@
+public class Solution {
+    /**
+     * @param triangle: a list of lists of integers.
+     * @return: An integer, minimum path sum.
+     */
+    public int minimumTotal(int[][] triangle) {
+        if(triangle == null) return 0;
+        int n = triangle.length;
+        if(n == 0) return 0;
+        
+        int[] dp = new int[n];
+        for(int i = 0; i<n; i++){
+            dp[i] = triangle[n-1][i];
+        }
+        
+        int index = 2;
+        for(int i = n-2; i>=0; i--){
+            for(int j = 0; j<=n-index; j++){
+                dp[j] = triangle[i][j]+ Math.min(dp[j], dp[j+1]);
+            }
+            index++;
+        }
+        
+        return dp[0];
+    }
+}
