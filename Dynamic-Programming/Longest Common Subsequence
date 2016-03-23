@@ -1,0 +1,44 @@
+public class Solution {
+    /**
+     * @param A, B: Two strings.
+     * @return: The length of longest common subsequence of A and B.
+     */
+     
+    /*
+    lcs recursive
+    This is a correct solution but it's very time consuming. For example, if the two strings have no matching characters, so the last line always gets executed, the the time bounds are binomial coefficients, which (if m=n) are close to 2^n.
+    */
+    /*public int longestCommonSubsequence(String A, String B) {
+        if(A == null || B == null) return 0;
+        else if(A.length() == 0 || B.length() == 0) return 0;
+        else{
+            if(A.charAt(0) == B.charAt(0)){
+                return 1+longestCommonSubsequence(A.substring(1), B.substring(1));
+            }else{
+                int l1 = longestCommonSubsequence(A, B.substring(1));
+                int l2 = longestCommonSubsequence(A.substring(1),B);
+                return Math.max(l1, l2);
+            }
+        }
+    }*/
+    
+    public int longestCommonSubsequence(String A, String B) {
+        if(A == null || B == null) return 0;
+        else if(A.length() == 0 || B.length() == 0) return 0;
+        
+        int m = A.length();
+        int n = B.length();
+        int[][] dp = new int[m+1][n+1];
+        
+        for(int i = 1; i<=m; i++){
+            for(int j = 1; j<=n; j++){
+                if(A.charAt(i-1) == B.charAt(j-1)){
+                    dp[i][j] = 1+dp[i-1][j-1];
+                }else{
+                    dp[i][j] = Math.max(dp[i-1][j], dp[i][j-1]);
+                }
+            }
+        }
+        return dp[m][n];
+    }
+}
