@@ -1,0 +1,25 @@
+public class Solution {
+    /**
+     * Determine whether s3 is formed by interleaving of s1 and s2.
+     * @param s1, s2, s3: As description.
+     * @return: true or false.
+     */
+    public boolean isInterleave(String s1, String s2, String s3) {
+        if(s1 == null && s2 == null && s3 == null) return true;
+        else if(s1.length() == 0 && s2.length() == 0 && s3.length() == 0) return true;
+        else if(s1.length()+s2.length() != s3.length()) return false;
+        return isInterleaveH(s1, s2, s3, 0, 0, 0);
+    }
+    
+    public boolean isInterleaveH(String s1, String s2, String s3, int id1, int id2, int id3){
+        if(id1 == s1.length()) return s2.substring(id2).equals(s3.substring(id3));
+        else if(id2 == s2.length()) return s1.substring(id1).equals(s3.substring(id3));
+        else if(s3.charAt(id3) == s1.charAt(id1) && s3.charAt(id3) == s2.charAt(id2)){
+            return isInterleaveH(s1, s2, s3, id1+1, id2, id3+1)||isInterleaveH(s1, s2, s3, id1, id2+1, id3+1);
+        }else if(s3.charAt(id3) == s1.charAt(id1)){
+            return isInterleaveH(s1, s2, s3, id1+1, id2, id3+1);
+        }else if(s3.charAt(id3) == s2.charAt(id2)){
+            return isInterleaveH(s1, s2, s3, id1, id2+1, id3+1);
+        }else return false;
+    }
+}
