@@ -1,0 +1,50 @@
+/*
+Given an array of n objects with k different colors (numbered from 1 to k), 
+sort them so that objects of the same color are adjacent, with the colors in the order 1, 2, ... k.
+*/
+
+class Solution {
+    /**
+     * @param colors: A list of integer
+     * @param k: An integer
+     * @return: nothing
+     */
+    /*
+    When you did sort color, we did three segments, lower, equal, higher
+    Noe we know min == 1 and max = k
+    so we will divide three segment again min, unsorted , max
+    then we will iterate through  until min<max
+    */
+    public void sortColors2(int[] colors, int k) {
+        if(colors == null || colors.length == 0) return;
+        int min = 1;
+        int max = k;
+        int l = 0;//index for the min part
+        int h = colors.length-1; // index for the max part
+        int i = 0; //index to traverse
+        
+        while(min<max){
+            while(i<=h){
+                if(colors[i] == min){
+                    swap(colors, i, l);
+                    i++;
+                    l++;
+                }else if(colors[i] == max){
+                    swap(colors, i, h);
+                    h--;
+                }else{
+                    i++;
+                }
+            }
+            i = l;
+            min++;
+            max--;
+        }
+    }
+    
+    public void swap(int[] a, int i, int j){
+        int temp = a[i];
+        a[i] = a[j];
+        a[j] = temp;
+    }
+}
