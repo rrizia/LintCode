@@ -1,0 +1,52 @@
+/*
+Given an integer array, heapify it into a min-heap array.
+
+For a heap array A, A[0] is the root of heap, 
+and for each A[i], A[i * 2 + 1] is the left child of A[i] and A[i * 2 + 2] is the right child of A[i].
+
+Example
+Given [3,2,1,4,5], return [1,2,3,4,5] or any legal heap array.
+
+Challenge
+O(n) time complexity
+*/
+
+public class Solution {
+    /**
+     * @param A: Given an integer array
+     * @return: void
+     */
+    public void heapify(int[] A) {
+        if(A == null || A.length == 0) return;
+        int parentEnd = (int)Math.floor(A.length/2.0);
+        
+        for(int i = parentEnd; i>=0; i--){
+            boolean isHeap = false;
+            int curId = i;
+            
+            while(!isHeap && curId <= parentEnd){
+                int cid1 = curId*2+1;
+                int cid2 = curId*2+2;
+                
+                int minId = curId;
+                
+                minId = (cid1<A.length && A[cid1] < A[minId])?cid1:minId;
+                minId = (cid2<A.length && A[cid2] < A[minId])?cid2:minId;
+                
+                if(minId == curId){
+                    isHeap = true;
+                }else if(minId == cid1){
+                    int temp = A[cid1];
+                    A[cid1] = A[curId];
+                    A[curId] = temp;
+                    curId = minId;
+                }else{
+                    int temp = A[cid2];
+                    A[cid2] = A[curId];
+                    A[curId] = temp;
+                    curId = minId;
+                }
+            }
+        }
+    }
+}
