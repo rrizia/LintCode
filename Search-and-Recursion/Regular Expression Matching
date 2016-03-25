@@ -1,0 +1,52 @@
+/*
+Implement regular expression matching with support for '.' and '*'.
+
+'.' Matches any single character.
+'*' Matches zero or more of the preceding element.
+
+The matching should cover the entire input string (not partial).
+
+The function prototype should be:
+bool isMatch(const char *s, const char *p)
+
+isMatch("aa","a") → false
+isMatch("aa","aa") → true
+isMatch("aaa","aa") → false
+isMatch("aa", "a*") → true
+isMatch("aa", ".*") → true
+isMatch("ab", ".*") → true
+isMatch("aab", "c*a*b") → true
+
+*/
+
+public class Solution {
+    /**
+     * @param s: A string 
+     * @param p: A string includes "." and "*"
+     * @return: A boolean
+     */
+    public boolean isMatch(String s, String p) {
+        if(s == null || p == null) return false;
+        else if(s.length() == 0) return true;
+        else if(p.length() == 0) return false;
+        return isMatch(s, 0, p, 0);
+    }
+    
+    public boolean isMatch(String s, int sid, String p, int pid){
+        if(sid == s.length() && pid == p.length()) return true;
+        else if(sid == s.length() || pid == p.length()) return false;
+        else if(pid<p.length()-1 && p.charAt(pid+1) == '*'){
+            if(isMatch(s, sid, p, pid+2))
+                return true;
+            while(sid<s.length() && (s.charAt(sid) == p.charAt(pid) || p.charAt(pid) == '.')){
+                if(isMatch(s, ++sid, p, pid+2))
+                    return true;
+            }
+        }else{
+            if(s.charAt(sid) == p.charAt(pid) || p.charAt(pid) == '.')
+                if(isMatch(s, sid+1, p, pid+1))
+                    return true;
+        }
+        return false;
+    }
+}
