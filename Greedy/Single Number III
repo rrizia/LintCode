@@ -1,0 +1,52 @@
+/*
+Given 2*n + 2 numbers, every numbers occurs twice except two, find them.
+
+Example
+Given [1,2,2,3,4,4,5,3] return 1 and 5
+
+Challenge
+O(n) time, O(1) extra space.
+*/
+
+public class Solution {
+    /*
+    Let us assume the two numbers are A and B
+    When we do xor or all the numbers the result actually gives A ^ B, 
+    so xor = A^B, would give you 1s where A and B are different
+    which mean at these bit positions there are set of numbers which have same bit as A,
+    and there are set of numbers which has the same bit as B
+    so, if we just consider the first 1 in xor and divide the numbers which has bit 0 or bit 1 at this index, we will be left with A and B as all the numbers apear twice [same as single number]
+    */
+    /**
+     * @param A : An integer array
+     * @return : Two integers
+     */
+    public List<Integer> singleNumberIII(int[] A) {
+        List<Integer> result = new ArrayList<Integer>();
+        if(A == null || A.length == 0) return result;
+        
+        int aXorB = 0;
+        for(int i : A){
+            aXorB ^= i;
+        }
+        
+        int mask = 1;
+        while( (aXorB & mask) == 0){
+            mask = mask << 1;
+        }
+        
+        int n1 = 0;
+        int n2 = 0;
+        
+        for(int i : A){
+            if( (i & mask) == 0){
+                n1 ^= i;
+            }else{
+                n2 ^= i;
+            }
+        }
+        result.add(n1);
+        result.add(n2);
+        return result;
+    }
+}
