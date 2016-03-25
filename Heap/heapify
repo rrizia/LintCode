@@ -1,4 +1,29 @@
 /*
+Complexity analysis
+
+Can someone help explain how can building a heap be O(n) complexity?
+
+Inserting an item into a heap is O(log n), and the insert is repeated n/2 times 
+(the remainder are leaves, and can't violate the heap property). 
+So, this means the complexity should be O(n log n), I would think.
+Your analysis is correct. However, it is not tight.
+
+It is not really easy to explain why building a heap is a linear operation, you should better read it.
+
+Great analysis of algorithm can be seen here.
+
+The main idea is that in the build_heap algorithm the actual heapify cost is not O(log n)for all elements.
+
+When heapify is called, the running time depends on how far an element might move down in tree before the process terminates. In other words, it depends on the height of the element in the heap. In the worst case, the element might go down all the way to the leaf level.
+
+Let us count the work done level by level.
+
+At the bottommost level, there are 2^(h)nodes, but we do not call heapify on any of these, so the work is 0. At the next to level there are 2^(h − 1) nodes, and each might move down by 1 level. At the 3rd level from the bottom, there are 2^(h − 2) nodes, and each might move down by 2 levels.
+
+As you can see not all heapify operations are O(log n), this is why you are getting O(n).
+*/
+
+/*
 Given an integer array, heapify it into a min-heap array.
 
 For a heap array A, A[0] is the root of heap, 
