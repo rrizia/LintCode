@@ -1,0 +1,32 @@
+public class Solution {
+    /**
+     * @param m: An integer m denotes the size of a backpack
+     * @param A: Given n items with size A[i]
+     * @return: The maximum size
+     */
+    public int backPack(int n, int[] A) {
+        if(A == null || A.length == 0) return 0;
+        int m = A.length;
+        
+        //with elements upto i, can we fill the bag upto j?
+        /*
+        A={2, 5, 4, 3}, n = 10
+        1 2 3 4 5 6 7 8 9 10
+        f t f f ............[can pick 2 and can fill the bag with size 3]
+        f t t t f
+        */
+        boolean[][] dp = new boolean[m+1][n+1];
+        dp[0][0] = true;
+        
+        for(int i = 1; i<=m; i++){
+            for(int j = 0; j<=n; j++){
+                dp[i][j] = dp[i-1][j] || (j>=A[i-1] && dp[i-1][j-A[i-1]]);
+
+            }
+        }
+        
+        for(int col = n; col>=0; col--)
+            if(dp[A.length][col]) return col;
+        return 0;
+    }
+}
