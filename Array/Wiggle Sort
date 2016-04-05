@@ -1,0 +1,40 @@
+/*
+O(n^2)
+*/
+
+public class Solution {
+    /**
+     * @param nums a list of integer
+     * @return void
+     */
+    public void wiggleSort(int[] nums) {
+        if(nums == null || nums.length == 0) return;
+        boolean small = true;
+        for(int i = 0; i<nums.length; i++){
+            int j = getIndex(nums, i, nums.length-1, small);
+            //System.out.println(nums[i]+" "+nums[j]+" "+i+" "+(nums.length-1));
+            if(i!=j){
+                int temp = nums[j];
+                nums[j] = nums[i];
+                nums[i] = temp;
+            }
+            //System.out.println(Arrays.toString(nums));
+            small = !small;
+        }
+    }
+    
+    public int getIndex(int[] nums, int start, int end, boolean small){
+        //System.out.println(nums[start]+" "+nums[end]);
+        if(start == end) return start;
+        int idx = start;
+        
+        for(int i = start; i<=end; i++){
+            if(small){
+                idx = nums[i]<nums[idx]?i:idx;
+            }else{
+                idx = nums[i]>nums[idx]?i:idx;
+            }
+        }
+        return idx;
+    }
+}
