@@ -1,0 +1,79 @@
+/*
+Given an interval list which are flying and landing time of the flight. How many airplanes are on the sky at most?
+*/
+
+/**
+ * Definition of Interval:
+ * public classs Interval {
+ *     int start, end;
+ *     Interval(int start, int end) {
+ *         this.start = start;
+ *         this.end = end;
+ *     }
+ */
+
+class Solution {
+    class Pair{
+        int time;
+        boolean isStart;
+        
+        public Pair(int t, boolean start){
+            time = t;
+            isStart = start;
+        }
+    }
+    
+    class PairComparator implements Comparator<Pair>{
+        public int compare(Pair p1, Pair p2){
+            return p1.time - p2.time;
+        }
+    }
+    /**
+     * @param intervals: An interval array
+     * @return: Count of airplanes are in the sky.
+     */
+    public int countOfAirplanes(List<Interval> list) { 
+        if(list == null || list.size() == 0) return 0;
+        /*
+        [[10,14],[10,15],[10,16],[1,10],[2,10],[3,10],[4,10]]
+        
+        for this case landing time (at the end) overlaps with flying time (at the begining)
+        sort intervals based on flying time to make sure landing occurs befire flying
+        */
+        
+        Collections.sort(list, new Comparator<Interval>(){
+            public int compare(Interval i1, Interval i2){
+                return i1.start - i2.start;
+            }
+        });
+        
+        ArrayList<Pair> pairs = new ArrayList<Pair>();
+        for(Interval i: list){
+            pairs.add(new Pair(i.start, true));
+            pairs.add(new Pair(i.end, false));
+        }
+        /*
+        [
+          [1,10],
+          [2,3],
+          [5,8],
+          [4,7]
+        ]
+        this would look like, 1, 2, 3, 4, 5, 7, 8, 10
+        */
+        Collections.sort(pairs, new PairComparator());
+        
+        int count = 0;
+        int max = 0;
+        
+        for(Pair p:pairs){
+            if(p.isStart == true){
+                count++;
+                max = Math.max(count, max);
+            }else{
+                count--;
+            }
+        }
+        return max;
+    }
+}
