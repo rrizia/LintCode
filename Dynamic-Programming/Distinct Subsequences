@@ -19,7 +19,14 @@ O(n2) memory is also acceptable if you do not know how to optimize memory.
     appppple, apple answer is 10 [delete 3 ps from the 5 ps]
     */
 */
-
+/*
+Complexity of recursive solution
+When all the chars of s is the same as the first char of t
+s = "aaaaa", t = "aaaa"
+s length = n
+t length = m
+O(n^m)
+*/
 public class Solution {
     /**
      * @param S, T: Two string.
