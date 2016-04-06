@@ -50,7 +50,20 @@ public class Solution {
     }
 }
 
-//dp solution
+DP SOLUTION
+/*
+Two cases for each num[i][j]:
+
+num[i][j] inherits from num[i][j-1]. 
+This means overlooking s[j], t[0..i] at least keeps the number of distinct sequences in s[0..j-1]. 
+This case finds all sequences of t[0..i] in s[o..j] without s[j].
+
+if t[i]==s[j], 
+this means t[i] could be mapped to s[j], we cannot overlook s[j].  
+We look at the number of t[0..i-1] in s[0..j-1], and add it to the result. 
+This case finds all sequences of t[0..i] in s[o..j] with s[j].
+
+*/
 public class Solution {
     /*
     abc, ae, answer 0 [ae does not exist in abc after deleteting 0 or more chars]
