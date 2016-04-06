@@ -11,9 +11,12 @@ public class Solution {
         //with elements upto i, can we fill the bag upto j?
         /*
         A={2, 5, 4, 3}, n = 10
-        1 2 3 4 5 6 7 8 9 10
-        f t f f ............[can pick 2 and can fill the bag with size 3]
-        f t t t f
+        0 1 2 3 4 5 6 7 8 9 10
+        2 f t f f ............[can pick 2 and can fill the bag with size 3]
+        5 f t t t f
+        4
+        3
+        
         */
         boolean[][] dp = new boolean[m+1][n+1];
         dp[0][0] = true;
