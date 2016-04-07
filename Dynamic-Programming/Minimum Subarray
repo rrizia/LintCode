@@ -1,0 +1,62 @@
+
+public class Solution {
+    /**
+     * @param nums: a list of integers
+     * @return: A integer indicate the sum of minimum subarray
+     */
+    public int minSubArray(ArrayList<Integer> nums) {
+       if(nums == null || nums.size() == 0) return Integer.MAX_VALUE;
+       int[] parSum = new int[nums.size()];
+       parSum[0] = nums.get(0);
+       int min = parSum[0];
+       
+       for(int i = 1; i<nums.size(); i++){
+           int sum = parSum[i-1]+nums.get(i);
+           if(sum > nums.get(i)){
+               parSum[i] = nums.get(i);
+           }else{
+               parSum[i] = sum; 
+           }
+           min = Math.min(min, parSum[i]);
+       }
+       return min;                  
+    }
+}
+
+
+public class Solution {
+    /**
+     * @param nums: a list of integers
+     * @return: A integer indicate the sum of minimum subarray
+     */
+    public int minSubArray(ArrayList<Integer> nums) {
+        if(nums == null || nums.size() == 0) return 0;
+        int[] parSum = new int[nums.size()];
+        parSum[0] = nums.get(0);
+        int begin = 0;
+        int end = 0;
+        int min = parSum[0];
+        
+        for(int i = 1; i<nums.size(); i++){
+            int nBegin = begin;
+            int nEnd = end;
+            
+            int sum = parSum[i-1]+nums.get(i);
+            if(sum > nums.get(i)){
+                parSum[i] = nums.get(i);
+                nBegin = i;
+                nEnd = i;
+            }else{
+                parSum[i] = sum;
+                nEnd = i;
+            }
+            
+            if(parSum[i] < min){
+                min = parSum[i];
+                begin = nBegin;
+                end = nEnd;
+            }
+        }
+        return min;
+    }
+}
