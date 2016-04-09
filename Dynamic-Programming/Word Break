@@ -1,0 +1,53 @@
+Recursive:
+
+public class Solution {
+	public int wordBreak(String s, ArrayList<String> wordDict) {
+	    if(s == null || s.length() == 0) return 0;
+	    else if(wordDict.contains(s)) return 1;
+	    Map<String, Boolean> map = new HashMap<String, Boolean>();
+	    for(String str:wordDict){
+	        map.put(str, true);
+	    }
+	    return canBeBroken(s, map, true)?1:0;
+	}
+	
+	/*
+	Complexity O(n^2), for the case where I can find all the intermediate word in the dictionary
+	but the recursive call returns false
+	*/
+	public boolean canBeBroken(String s, Map<String, Boolean> map, boolean original){
+	    if(map.containsKey(s) && !original) return map.get(s);
+	    for(int i = 1; i<s.length(); i++){
+	        String first = s.substring(0, i);
+	        if(map.containsKey(first) && map.get(first) == true && canBeBroken(s.substring(i), map, false)){
+	            return true;
+	        }
+	    }
+	    map.put(s, false);
+	    return false;
+	}
+}
+
+
+/*
+DP
+
+*/
+
+/*
+    O(n*m) n == length of s, m == size of dictionary
+    */
+    public boolean wordBreak(String s, Set<String> wordDict) {
+        if(s == null || s.length() == 0) return false;
+        boolean[] canBeBroken = new boolean[s.length()+1];
+        canBeBroken[0] = true;
+        
+        for(int i = 0; i<s.length(); i++){
+            for(String str:wordDict){
+                if(i+str.length() <= s.length() && s.substring(i, i+str.length()).equals(str) && canBeBroken[i]){
+                    canBeBroken[i+str.length()] = true;
+                }        
+            }
+        }
+        return canBeBroken[s.length()];
+    }
