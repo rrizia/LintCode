@@ -1,0 +1,29 @@
+public class Solution {
+    public List<String> wordBreak(String s, Set<String> wordDict) {
+        List<String> result = new ArrayList<String>();
+        if(s == null || s.length() == 0) return result;
+        List<String> subList = new ArrayList<String>();
+        boolean[] store = new boolean[s.length()+1];
+        Arrays.fill(store, true);
+        wordBreakH(s, 0, wordDict, store, subList, result);
+        return result;
+    }
+    
+    public void wordBreakH(String s, int start, Set<String> wordDict, boolean[] store, List<String> subList, List<String> result){
+        if(start >= s.length()){
+            result.add(String.join(" ", subList));
+        }else{
+            for(int i = start+1; i<=s.length(); i++){
+                String cur = s.substring(start, i);
+                if(wordDict.contains(cur) && store[i]){
+                    subList.add(cur);
+                    int before = result.size();
+                    wordBreakH(s, i, wordDict,store, subList, result);
+                    if(before == result.size()) 
+                        store[i] = false;
+                    subList.remove(subList.size()-1);
+                }
+            }
+        }
+    }
+}
