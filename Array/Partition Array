@@ -34,3 +34,31 @@ public class Solution {
 	    return cur;
     }
 }
+
+
+public int partitionArray(int[] nums, int k) {
+	    if(nums == null || nums.length == 0) return 0;
+	    int lower = 0;
+	    int equal = 0;
+	    int higher = nums.length-1;
+	    
+	    while(equal<=higher){
+	        if(nums[equal] < k){
+	            int temp = nums[equal];
+	            nums[equal++] = nums[lower];
+	            nums[lower++] = temp;
+	        }else if(nums[equal] == k){
+	            equal++;
+	        }else{
+	            int temp = nums[equal];
+	            nums[equal] = nums[higher];
+	            nums[higher--] = temp;
+	        }
+	    }
+	    
+	    int i = 0;
+	    while(i<nums.length && nums[i] < k){
+	        i++;
+	    }
+	    return i;
+    }
