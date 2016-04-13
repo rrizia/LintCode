@@ -1,7 +1,3 @@
-/*
-Given an interval list which are flying and landing time of the flight. How many airplanes are on the sky at most?
-*/
-
 /**
  * Definition of Interval:
  * public classs Interval {
@@ -11,48 +7,16 @@ Given an interval list which are flying and landing time of the flight. How many
  *         this.end = end;
  *     }
  */
+ 
+ /*
+    [[10,14],[10,15],[10,16],[1,10],[2,10],[3,10],[4,10]]
+        
+    for this case landing time (at the end) overlaps with flying time (at the begining)
+    sort intervals based on flying time to make sure landing occurs befire flying
+    when sorted based on events (if we dont prior sort the intervals) the landing will apear later than the flying
+*/
 
-class Solution {
-    class Pair{
-        int time;
-        boolean isStart;
-        
-        public Pair(int t, boolean start){
-            time = t;
-            isStart = start;
-        }
-    }
-    
-    class PairComparator implements Comparator<Pair>{
-        public int compare(Pair p1, Pair p2){
-            return p1.time - p2.time;
-        }
-    }
-    /**
-     * @param intervals: An interval array
-     * @return: Count of airplanes are in the sky.
-     */
-    public int countOfAirplanes(List<Interval> list) { 
-        if(list == null || list.size() == 0) return 0;
-        /*
-        [[10,14],[10,15],[10,16],[1,10],[2,10],[3,10],[4,10]]
-        
-        for this case landing time (at the end) overlaps with flying time (at the begining)
-        sort intervals based on flying time to make sure landing occurs befire flying
-        */
-        
-        Collections.sort(list, new Comparator<Interval>(){
-            public int compare(Interval i1, Interval i2){
-                return i1.start - i2.start;
-            }
-        });
-        
-        ArrayList<Pair> pairs = new ArrayList<Pair>();
-        for(Interval i: list){
-            pairs.add(new Pair(i.start, true));
-            pairs.add(new Pair(i.end, false));
-        }
-        /*
+/*
         [
           [1,10],
           [2,3],
@@ -60,19 +24,55 @@ class Solution {
           [4,7]
         ]
         this would look like, 1, 2, 3, 4, 5, 7, 8, 10
-        */
-        Collections.sort(pairs, new PairComparator());
+        */      
+
+class Solution {
+    
+    /**
+     * @param intervals: An interval array
+     * @return: Count of airplanes are in the sky.
+     */
+    class Event{
+        int time;
+        boolean fly;
         
-        int count = 0;
+        public Event(int t, boolean f){
+            time = t;
+            fly = f;
+        }
+    }
+    public int countOfAirplanes(List<Interval> list) { 
+        if(list == null || list.size() == 0) return 0;
+        Collections.sort(list, new Comparator<Interval>(){
+           public int compare(Interval i1, Interval i2){
+               return i1.start-i2.start;
+           } 
+        });
+        
+        List<Event> events = new ArrayList<Event>();
+        for(Interval i: list){
+            Event e1 =  new Event(i.start, true);
+            Event e2 =  new Event(i.end, false);
+            events.add(e1);
+            events.add(e2);
+        }
+        
+        Collections.sort(events, new Comparator<Event>(){
+           public int compare(Event e1, Event e2){
+               return e1.time-e2.time;
+           } 
+        });
+        
         int max = 0;
+        int count = 0;
         
-        for(Pair p:pairs){
-            if(p.isStart == true){
+        for(Event e: events){
+            if(e.fly){
                 count++;
-                max = Math.max(count, max);
             }else{
                 count--;
             }
+            max = Math.max(max, count);
         }
         return max;
     }
