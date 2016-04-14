@@ -3,6 +3,26 @@ public class Solution {
      * @param matrix an integer matrix
      * @return the coordinate of the left-up and right-down number
      */
+     
+    /*
+    0 0 0 0 
+    0 1 6 13 
+    0 4 16 15 
+    0 8 12 20 
+     
+     8-1 == 7
+     20-13 == 7
+     the first diff 7 is the some of the following matrix:
+     0 1
+     0 4
+     
+     the second diff: 
+     0 1 6  13
+     0 4 16 15
+     
+     so the diff same means I have seen this sum before (same as the 1D array problem (subarray sum))
+     means the intermediate matrix actually sums upto 0
+     */
     public int[][] submatrixSum(int[][] matrix) {
         if(matrix == null) return null;
         int[][] result = new int[2][2];
