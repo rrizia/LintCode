@@ -38,3 +38,23 @@ class Solution {
     }
 
 }
+
+//in place
+
+private void mergeInterval(List<Interval> l){
+        Interval prev = l.get(0);
+        for(int i = 1; i<l.size(); i++){
+            Interval cur = l.get(i);
+            if(prev.end>=cur.start){
+                Interval temp = new Interval(prev.start, Math.max(prev.end, cur.end));
+                l.add(i, temp);
+                l.remove(prev);
+                l.remove(cur);
+                i--;
+                prev = temp;
+            }else{
+                
+                prev = cur;
+            }
+        }
+    }
