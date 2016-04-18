@@ -10,6 +10,13 @@ Given [1,2,4], return 1.
      then take 1 and do the same counting got  it and add it to result
      at the same time decrese the fact
     */
+/* if I return result, this is what happens:
+     
+     [1,2,3], this is the first permutaiton
+     but the loop will never add anything to the result as never A[j] < A[i]
+     so we need to do ++result;
+     
+ */
 public class Solution {
     /**
      * @param A an integer array
