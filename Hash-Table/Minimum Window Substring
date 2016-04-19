@@ -43,8 +43,9 @@ public class Solution {
                     }
                     seen.put(c, seen.get(c)+1);
                 }
+                //count++;
             }
-            
+            //System.out.println(count+" "+tLen);
             if(count == tLen){
                 char first = source.charAt(start);
                 while(!targetMap.containsKey(first) || targetMap.get(first) < seen.get(first)){
