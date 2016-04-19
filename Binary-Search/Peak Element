@@ -31,7 +31,14 @@ class Solution {
         }
     }
 }
-
+/*
+    if(A[0] > A[1]) A[0] can be considered the pick element
+    if(A[n-1] > A[n-2]) A[n-1] can be considered the pick element
+    now if we find mid and see that A[mid] < A[mid-1], with the conditions s+1<e, this mean that A[mid-1] is at least greater that A[mid], so now if mid-1 == 0 , then we can know that this is peak. or else we can move to the left.
+    the reason for moving left is A[mid-2] can either be greater than A[mid-1] or less
+    if it is greater than we can proceed further to the left until index 0
+    if it is less then mid-1 is the peak
+    */
 public int findPeak(int[] A) {
         int s = 0;
         int e = A.length-1;
