@@ -50,3 +50,30 @@ public ListNode swapPairs(ListNode head) {
             prev.next = cur;
        return ret;    
     }
+    
+    public ListNode swapPairs(ListNode head) {
+        if(head == null || head.next == null) return head;
+           
+        ListNode ret = head.next;
+        ListNode prev = null;
+           
+        while(head!=null){
+            ListNode temp = null;
+            
+            ListNode n1 = head;
+            ListNode n2 = head.next;
+            
+            if(n2!=null)
+                temp = n2.next;
+                
+            n1.next = null;
+            if(n2!=null)
+                n2.next = n1;
+            
+            if(prev!=null)
+                prev.next = (n2==null)?n1:n2;
+            prev = n1;
+            head = temp;
+        }
+        return ret;
+    }
