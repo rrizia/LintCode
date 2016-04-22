@@ -57,3 +57,46 @@ class Solution {
         return t;
     }
 }
+
+
+//my way
+
+public String serialize(TreeNode root) {
+        if(root == null) return "";
+        StringBuilder sb = new StringBuilder();
+        serializeH(root, sb);
+        return sb.toString();
+    }
+    
+    public void serializeH(TreeNode root, StringBuilder sb){
+        if(root == null){
+            sb.append('#');
+            sb.append(',');
+        }else{
+            sb.append(root.val);
+            sb.append(',');
+            serializeH(root.left, sb);
+            serializeH(root.right, sb);
+        }
+    }
+    
+    private int index = -1;
+    public TreeNode deserialize(String data) {
+        if(data == null || data.length() == 0) return null;
+        String[] strs = data.split(",");
+        index = 0;
+        return deserialize(strs);
+    }
+    
+    public TreeNode deserialize(String[] strs){
+        if(strs == null || strs.length == 0 || index == strs.length) return null;
+        String cur = strs[index++];
+        if(cur.equals("#")){
+            return null;
+        }else{
+            TreeNode root = new TreeNode(Integer.parseInt(cur));
+            root.left = deserialize(strs);
+            root.right= deserialize(strs);
+            return root;
+        }
+    }
