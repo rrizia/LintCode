@@ -92,6 +92,14 @@ Use DP[T][S]. We realize:
 4.When looking at each row and filling out the pixels, we realize when T exist in S[a~b], it will surely exist in S[a~b+1], taht is:
     Step1: DP[i][j] is at least equal to DP[i][j - 1];//DP[i][j] is always based on DP[i][j-1], so DP[i][j] = DP[i][j+1] + something
     */
+    /*
+    rabbbit, rabbit
+    
+    rab is a subsequnce of rab and so is a subsequence of rabb [we do not care whether t[i] == s[j] or not] dp[i][j] = dp[i][j-1];
+    now if t[i] == s[j]
+    dp[i] [j] +=dp[i-1][j-1]
+    */
+    
     /**
      * @param S, T: Two string.
      * @return: Count the number of distinct subsequences
