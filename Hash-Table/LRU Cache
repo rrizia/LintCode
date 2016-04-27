@@ -1,0 +1,97 @@
+public class LRUCache {
+    
+    class Node{
+        int key;
+        int value;
+        Node prev;
+        Node next;
+        
+        public Node(int k, int v){
+            key = k;
+            value = v;
+            prev = null;
+            next = null;
+        }
+    }   
+    
+    int capacity;
+    Map<Integer, Node> map;
+    Node head;
+    Node tail;
+    
+    public LRUCache(int capacity) {
+       this.capacity = capacity;
+       map = new HashMap<Integer, Node>(capacity);
+       head = null;
+       tail = null;
+    }
+    
+    public void remove(Node t){
+        if(t.prev == null) {
+            head = t.next;
+            if(head!=null)
+                head.prev = null;
+        }
+        
+        if(t.next == null) {
+            tail = t.prev;
+            if(tail!=null)
+                tail.next = null;
+            
+        }
+        
+        else if(t.prev!=null && t.next!=null){
+            t.prev.next = t.next;
+            t.next.prev = t.prev;
+        }
+    }
+    
+    public void addToFront(Node t){
+        t.prev = null;
+        t.next = head;
+        if(head != null){
+            head.prev = t;
+            head = t;
+        }else{
+            head = t;
+            tail = t;
+        }
+    }
+    /*
+    if map contains the key, move the node to the front and resturn the value;
+    for moving remove the node and the addtofront
+    */
+    public int get(int key) {
+        if(map.containsKey(key)){
+            Node temp = map.get(key);
+            remove(temp);
+            addToFront(temp);
+            return temp.value;
+        }
+        return -1;
+    }
+    /*
+    1. check if the key already exist, if exists, then just replace the value and move the node to the front
+    2. If does not exist, then check if capacity exceeds ot not. if exceeds than remove the tail from both list and map and add the new node to the front;
+    3. If does not exceeds add the new node to the front;
+    */
+    public void set(int key, int value) {
+        if(map.containsKey(key)){
+               Node old = map.get(key);
+               old.value = value;
+               remove(old);
+               addToFront(old);
+        }else{
+            Node temp = new Node(key, value);
+            if(map.size() == capacity){
+               map.remove(tail.key);
+               remove(tail);
+               addToFront(temp);
+               
+            }else{
+                addToFront(temp);
+            }
+            map.put(key, temp);
+        }
+    }
+}
