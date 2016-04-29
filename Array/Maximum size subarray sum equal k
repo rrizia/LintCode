@@ -1,0 +1,27 @@
+public class Solution {
+    /*
+    the hash stores (sum, i) key value pair. for each sum at each index
+    find sum(i, j) = k is equaivalent to sum(j)-sum(i-1) = k
+    So traverse through the array and for each sum(j) see if there is any sum(j)-k exists
+    if exists then do max = math.max(max, j-get(sum(j) - k));
+    */
+    public int maxSubArrayLen(int[] nums, int k) {
+        if(nums == null || nums.length == 0) return 0;
+        
+        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+        map.put(0, -1);//in case whole array sums upto k
+        int max = 0;
+        int sum = 0;
+        for(int i = 0; i<nums.length; i++){
+            sum+=nums[i];
+            if(!map.containsKey(sum)){
+                map.put(sum, i);    
+            }
+            int rem = sum - k;
+            if(map.containsKey(rem)){
+                max = Math.max(max, i-map.get(rem));
+            }
+        }
+        return max;
+    }
+}
