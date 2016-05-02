@@ -52,3 +52,51 @@ public class Solution {
         return maxHeap.peek();
     }
 }
+
+
+//leetcode
+class MedianFinder {
+    PriorityQueue<Integer> maxHeap = new PriorityQueue<Integer>(100, new Comparator<Integer>(){
+        public int compare(Integer n1, Integer n2){
+            return n2-n1;
+        }
+    });
+    
+    PriorityQueue<Integer> minHeap = new PriorityQueue<Integer>(100, new Comparator<Integer>(){
+       public int compare(Integer n1, Integer n2){
+           return n1-n2;
+       } 
+    });
+    // Adds a number into the data structure.
+    public void addNum(int num) {
+        if(maxHeap.size() == minHeap.size()){
+            if(minHeap.size() > 0 && num >= minHeap.peek()){
+                maxHeap.offer(minHeap.poll());
+                minHeap.offer(num);
+            }else{
+                maxHeap.offer(num);
+            }
+        }else{
+            if(num <= maxHeap.peek()){
+                minHeap.offer(maxHeap.poll());
+                maxHeap.offer(num);
+            }else{
+                minHeap.offer(num);
+            }
+        }
+    }
+
+    // Returns the median of current data stream
+    public double findMedian() {
+        if(maxHeap.size() > minHeap.size())
+            return (double)maxHeap.peek();
+        else{
+            return (double)(maxHeap.peek()+minHeap.peek())/2.0;
+        }
+    }
+};
+
+// Your MedianFinder object will be instantiated and called as such:
+// MedianFinder mf = new MedianFinder();
+// mf.addNum(1);
+// mf.findMedian();
