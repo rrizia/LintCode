@@ -21,29 +21,39 @@ public class Solution {
     }
     
     public int partition(int[] nums, int s, int e, int pivot){
-        if(s>e || s<0 || e>=nums.length) return -1;
+        if(s>e) return -1;
         int l = s;
         int h = e;
-        int equal = s;
+        int i = s;
         
-        while(equal<=h){
-            if(nums[equal] < pivot){
-                int temp = nums[equal];
-                nums[equal++] = nums[l];
-                nums[l++] = temp;
-            }else if(nums[equal] == pivot){
-                equal++;
+        while(i<=h){
+            if(nums[i] < pivot){
+                swap(nums, l++, i++);
+            }else if(nums[i] == pivot){
+                i++;
             }else{
-                int temp = nums[equal];
-                nums[equal] = nums[h];
-                nums[h--] = temp;
+                swap(nums, i, h--);
             }
         }
         
-        for(int i = s; i<=e; i++){
-            if(nums[i] == pivot)
-                return i;
+        l = s;
+        h = e;
+        i =  -1;
+        while(l<=h){
+            int m = l + ((h-l)>>1);
+            if(nums[m] >= pivot){
+                i = m;
+                h = m-1;
+            }else{
+                l = m+1;
+            }
         }
-        return -1;
+        return i;
+    }
+    
+    public void swap(int[] nums, int i, int j){
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
     }
 }
