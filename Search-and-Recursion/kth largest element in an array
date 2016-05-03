@@ -1,3 +1,23 @@
+
+/*
+Because
+
+we already know which partition our desired element lies in.
+We do not need to sort (by doing partition on) all the elements, but only do operation on the partition we need.
+
+As in quick sort, we have to do partition in halves *, and then in halves of a half, but this time, 
+we only need to do the next round partition in one single partition (half) of the two where the element is expected to lie in.
+
+It is like (not very accurate)
+
+n + 1/2 n + 1/4 n + 1/8 n + ..... < 2 n
+So it is O(n).
+
+Half is used for convenience, the actual partition is not exact 50%.
+
+*/
+
+
 class Solution {
     /*
      * @param k : description of k
